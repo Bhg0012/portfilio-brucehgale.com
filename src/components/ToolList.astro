@@ -1,0 +1,86 @@
+---
+import { TOOL_AREAS } from '../content.config';
+import type { Project } from '../lib/projects';
+
+interface Props {
+  tools: Project['data']['tools'];
+}
+const { tools } = Astro.props;
+
+// Area labels keep source hosting, app hosting, and data storage distinct.
+const areaLabels: Record<(typeof TOOL_AREAS)[number], string> = {
+  language: 'Languages',
+  analysis: 'Analysis',
+  visualization: 'Visualization and reporting',
+  'data-storage': 'Data storage',
+  integration: 'APIs and integrations',
+  automation: 'Automation',
+  'source-control': 'Source code and version control',
+  'app-hosting': 'Hosting and deployment',
+  'ai-runtime': 'AI inside the project',
+  'ai-assist': 'AI used during development',
+  design: 'Design',
+  marketing: 'Marketing',
+  research: 'Research',
+  collaboration: 'Collaboration',
+  other: 'Other tools',
+};
+
+const groups = TOOL_AREAS.map((area) => ({
+  area,
+  label: areaLabels[area],
+  tools: tools.filter((t) => t.area === area),
+})).filter((g) => g.tools.length > 0);
+---
+
+<div class="tools">
+  {
+    groups.map((group) => (
+      <div class="tools__group">
+        <h3 class="tools__heading">{group.label}</h3>
+        <dl class="tools__list">
+          {group.tools.map((tool) => (
+            <div class="tools__item">
+              <dt>{tool.name}</dt>
+              <dd>{tool.purpose}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .tools {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    gap: var(--space-5);
+  }
+  .tools__group {
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .tools__heading {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+  .tools__list {
+    margin: var(--space-3) 0 0;
+  }
+  .tools__item + .tools__item {
+    margin-top: var(--space-4);
+  }
+  .tools__item dt {
+    font-weight: var(--weight-semibold);
+  }
+  .tools__item dd {
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+</style>

@@ -1,0 +1,57 @@
+---
+import Container from './Container.astro';
+import { site } from '../site.config';
+
+const { linkedin, github, email } = site.contact;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <Container class="site-footer__inner">
+    <p>© {year} {site.name}</p>
+    {
+      (email || linkedin || github) && (
+        <ul class="site-footer__links">
+          {email && (
+            <li>
+              <a href={`mailto:${email}`}>Email</a>
+            </li>
+          )}
+          {linkedin && (
+            <li>
+              <a href={linkedin} rel="me">LinkedIn</a>
+            </li>
+          )}
+          {github && (
+            <li>
+              <a href={github} rel="me">GitHub</a>
+            </li>
+          )}
+        </ul>
+      )
+    }
+  </Container>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-9);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+  .site-footer :global(.site-footer__inner) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-5);
+    padding-block: var(--space-6);
+  }
+  .site-footer__links {
+    display: flex;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

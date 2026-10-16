@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build output and generated files
+dist/
+.astro/
+
+# Local environment and credentials (safe examples are allowed)
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+.wrangler/
+*.pem
+*.key
+*.p12
+credentials*.json
+service-account*.json
+secrets/
+
+# Raw intake materials stay local and private.
+# Only the README and blank templates are tracked.
+intake/*
+!intake/README.md
+!intake/_templates/
+!intake/_templates/**
+
+# Logs and OS/editor files
+npm-debug.log*
+*.log
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/

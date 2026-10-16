@@ -1,0 +1,91 @@
+---
+/*
+ * About page. Contains only verified facts for now. Background, interests,
+ * and contact details are added as Bruce confirms them (src/site.config.ts).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Button from '../components/Button.astro';
+import { site, hasContact } from '../site.config';
+
+const { email, linkedin, github } = site.contact;
+---
+
+<BaseLayout title="About" description={`About ${site.name}.`}>
+  <Container width="prose">
+    <header class="page-header">
+      <h1>About</h1>
+    </header>
+    <div class="prose">
+      <p>
+        I'm {site.name}, a {site.profile.program} student at {site.profile.school} with a minor in {
+          site.profile.minor
+        }.
+      </p>
+    </div>
+
+    {
+      site.resume && (
+        <p class="resume">
+          <Button href={site.resume} download>
+            Download resume (PDF)
+          </Button>
+        </p>
+      )
+    }
+
+    {
+      hasContact && (
+        <section id="contact" class="contact" aria-labelledby="contact-heading">
+          <h2 id="contact-heading">Contact</h2>
+          <ul>
+            {email && (
+              <li>
+                <a href={`mailto:${email}`}>{email}</a>
+              </li>
+            )}
+            {linkedin && (
+              <li>
+                <a href={linkedin} rel="me">LinkedIn</a>
+              </li>
+            )}
+            {github && (
+              <li>
+                <a href={github} rel="me">GitHub</a>
+              </li>
+            )}
+          </ul>
+        </section>
+      )
+    }
+  </Container>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-block: var(--space-8) var(--space-6);
+  }
+  .page-header h1 {
+    font-size: var(--text-3xl);
+  }
+  .prose {
+    font-size: var(--text-lg);
+  }
+  .resume {
+    margin-top: var(--space-6);
+  }
+  .contact {
+    margin-top: var(--space-7);
+  }
+  .contact h2 {
+    font-size: var(--text-xl);
+  }
+  .contact ul {
+    margin-top: var(--space-3);
+    padding: 0;
+    list-style: none;
+  }
+  .contact li + li {
+    margin-top: var(--space-2);
+  }
+</style>

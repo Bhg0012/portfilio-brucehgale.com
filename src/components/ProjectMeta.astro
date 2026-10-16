@@ -1,0 +1,66 @@
+---
+import { contextLabels, formatDates, statusLabels, type Project } from '../lib/projects';
+
+interface Props {
+  project: Project;
+  /** "full" adds role and course for the project page header. */
+  variant?: 'compact' | 'full';
+}
+const { project, variant = 'compact' } = Astro.props;
+const { context, status, role } = project.data;
+const dates = formatDates(project);
+
+const items = [
+  { label: 'Context', value: [contextLabels[context.type], context.organization].filter(Boolean).join(' · ') },
+  variant === 'full' && context.course && { label: 'Course', value: context.course },
+  variant === 'full' && role && { label: 'Role', value: role },
+  variant === 'full' && context.teamSize && { label: 'Team', value: `${context.teamSize} people` },
+  dates && { label: 'Timeframe', value: dates },
+  status !== 'completed' && { label: 'Status', value: statusLabels[status] },
+].filter((i): i is { label: string; value: string } => Boolean(i));
+---
+
+<dl class:list={['meta', `meta--${variant}`]}>
+  {
+    items.map((item) => (
+      <div class="meta__item">
+        <dt>{item.label}</dt>
+        <dd>{item.value}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  .meta dd {
+    margin: 0;
+  }
+  .meta--compact dt {
+    /* Labels are announced but visually implied in compact cards. */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .meta--full {
+    gap: var(--space-4) var(--space-6);
+  }
+  .meta--full dt {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+  .meta--full dd {
+    color: var(--color-text);
+  }
+</style>

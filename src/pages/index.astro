@@ -1,0 +1,131 @@
+---
+/*
+ * Homepage. Messaging is deliberately minimal until real projects arrive.
+ * Planned sections (see docs/site-architecture.md): introduction and the
+ * problems Bruce can help solve, selected work, capabilities supported by
+ * that work, relevant background, and a clear next action.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Button from '../components/Button.astro';
+import ProjectGrid from '../components/ProjectGrid.astro';
+import { capabilitiesFrom, getFeaturedProjects, getProjects } from '../lib/projects';
+import { site, hasContact } from '../site.config';
+
+const projects = await getProjects();
+const featured = await getFeaturedProjects();
+const selected = featured.length > 0 ? featured : projects.slice(0, 3);
+const capabilities = capabilitiesFrom(projects);
+---
+
+<BaseLayout type="profile">
+  <section class="intro">
+    <Container>
+      <h1 class="intro__name">{site.name}</h1>
+      <p class="intro__lede">
+        {site.profile.program} student at {site.profile.school}, minor in {site.profile.minor}.
+      </p>
+      <div class="intro__actions">
+        {projects.length > 0 && <Button href="/work/">View my work</Button>}
+        <Button href="/about/" variant={projects.length > 0 ? 'secondary' : 'primary'}>About me</Button>
+        {hasContact && <Button href="/about/#contact" variant="secondary">Get in touch</Button>}
+      </div>
+    </Container>
+  </section>
+
+  {
+    selected.length > 0 && (
+      <section class="block" aria-labelledby="selected-work">
+        <Container>
+          <div class="block__header">
+            <h2 id="selected-work">Selected work</h2>
+            {projects.length > selected.length && <a href="/work/">All projects</a>}
+          </div>
+          <ProjectGrid projects={selected} />
+        </Container>
+      </section>
+    )
+  }
+
+  {
+    capabilities.length > 0 && (
+      <section class="block" aria-labelledby="capabilities">
+        <Container>
+          <div class="block__header">
+            <h2 id="capabilities">What the work shows</h2>
+          </div>
+          <dl class="capabilities">
+            {capabilities.map((c) => (
+              <div class="capabilities__item">
+                <dt>{c.label}</dt>
+                <dd>
+                  {c.projects.map((p, i) => (
+                    <>
+                      {i > 0 && ', '}
+                      <a href={`/work/${p.data.slug}/`}>{p.data.title}</a>
+                    </>
+                  ))}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Container>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .intro {
+    padding-block: var(--space-9) var(--space-7);
+  }
+  .intro__name {
+    font-size: var(--text-3xl);
+  }
+  .intro__lede {
+    margin-top: var(--space-4);
+    max-width: var(--width-prose);
+    color: var(--color-text-muted);
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+  }
+  .intro__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+  .block {
+    padding-block: var(--space-7);
+  }
+  .block__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+  .block__header h2 {
+    font-size: var(--text-2xl);
+  }
+  .capabilities {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    gap: var(--space-4);
+    margin: 0;
+  }
+  .capabilities__item {
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .capabilities__item dt {
+    font-weight: var(--weight-semibold);
+  }
+  .capabilities__item dd {
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-sm);
+  }
+</style>

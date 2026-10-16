@@ -1,0 +1,451 @@
+---
+import { getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import Section from '../../components/Section.astro';
+import Figure from '../../components/Figure.astro';
+import ProjectMeta from '../../components/ProjectMeta.astro';
+import ToolList from '../../components/ToolList.astro';
+import { getProjects, humanize, isPublic, type Project } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({ params: { slug: project.data.slug }, props: { project } }));
+}
+
+interface Props {
+  project: Project;
+}
+const { project } = Astro.props;
+const { Content } = await render(project);
+const d = project.data;
+
+const shareImage = d.cover ? await getImage({ src: d.cover.src, width: 1200, format: 'jpg' }) : undefined;
+
+const problem = d.problem;
+const hasProblem = Boolean(
+  problem && (problem.statement || problem.audience || problem.objectives.length || problem.constraints.length),
+);
+const hasBody = Boolean(project.body?.trim());
+const reflection = d.reflection;
+const hasReflection = Boolean(
+  reflection && (reflection.lessons.length || reflection.limitations.length || reflection.improvements.length),
+);
+const techniqueLabels: Record<string, string> = {
+  'prompt-design': 'Prompt design and iteration',
+  'context-handling': 'Context handling',
+  retrieval: 'Retrieval',
+  'structured-output': 'Structured outputs',
+  'tool-use': 'Tool use',
+  orchestration: 'Orchestration',
+  evaluation: 'Testing and evaluation',
+};
+const deploymentLabels = { local: 'Runs locally', 'hosted-api': 'Hosted model API', hybrid: 'Local and hosted' };
+const linkLabels: Record<string, string> = {
+  repository: 'Repository',
+  demo: 'Live demo',
+  report: 'Report',
+  presentation: 'Presentation',
+  dashboard: 'Dashboard',
+  article: 'Article',
+  other: 'Resource',
+};
+---
+
+<BaseLayout
+  title={d.seo?.title ?? d.title}
+  description={d.seo?.description ?? d.summary}
+  image={shareImage?.src}
+  imageAlt={d.cover?.alt}
+  type="article"
+  noindex={!isPublic(project)}
+>
+  {
+    !isPublic(project) && (
+      <div class="draft-banner" role="note">
+        <Container>
+          Preview only: this project is marked <strong>{d.publication}</strong> and is excluded from production builds.
+        </Container>
+      </div>
+    )
+  }
+
+  <article>
+    <!-- Quick overview: everything a recruiter needs in one screen. -->
+    <header class="hero">
+      <Container>
+        <p class="hero__back"><a href="/work/">← All work</a></p>
+        <p class="hero__eyebrow">{d.categories.map(humanize).join(' · ')}</p>
+        <h1 class="hero__title">{d.title}</h1>
+        <p class="hero__summary">{d.overview ?? d.summary}</p>
+        <ProjectMeta project={project} variant="full" />
+      </Container>
+    </header>
+
+    <Container>
+      {d.cover && <Figure src={d.cover.src} alt={d.cover.alt} priority />}
+
+      {
+        (hasProblem || d.contributions.length > 0 || d.results.length > 0) && (
+          <div class="glance">
+            {hasProblem && (
+              <section class="glance__panel" aria-labelledby="glance-problem">
+                <h2 id="glance-problem" class="glance__title">The problem</h2>
+                {problem?.statement && <p>{problem.statement}</p>}
+                {problem?.audience && (
+                  <p class="glance__note">
+                    <strong>Audience:</strong> {problem.audience}
+                  </p>
+                )}
+                {problem && problem.objectives.length > 0 && (
+                  <>
+                    <h3 class="glance__subtitle">Objectives</h3>
+                    <ul>
+                      {problem.objectives.map((o) => (
+                        <li>{o}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                {problem && problem.constraints.length > 0 && (
+                  <>
+                    <h3 class="glance__subtitle">Constraints</h3>
+                    <ul>
+                      {problem.constraints.map((c) => (
+                        <li>{c}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </section>
+            )}
+            {d.contributions.length > 0 && (
+              <section class="glance__panel" aria-labelledby="glance-contribution">
+                <h2 id="glance-contribution" class="glance__title">
+                  What I did
+                </h2>
+                <ul>
+                  {d.contributions.map((c) => (
+                    <li>{c}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+            {d.results.length > 0 && (
+              <section class="glance__panel" aria-labelledby="glance-results">
+                <h2 id="glance-results" class="glance__title">
+                  Results
+                </h2>
+                <ul>
+                  {d.results.map((r) => (
+                    <li>
+                      {r.href ? <a href={r.href}>{r.text}</a> : r.text}
+                      {r.evidence && <span class="glance__evidence">{r.evidence}</span>}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </div>
+        )
+      }
+
+      <!-- Deeper explanation: the Markdown narrative. -->
+      {
+        hasBody && (
+          <div class="prose body">
+            <Content />
+          </div>
+        )
+      }
+
+      {
+        d.figures.length > 0 && (
+          <Section title="Visuals" id="visuals">
+            <div class="figures">
+              {d.figures.map((f) => (
+                <Figure src={f.src} alt={f.alt} caption={f.caption} />
+              ))}
+            </div>
+          </Section>
+        )
+      }
+
+      {
+        d.tools.length > 0 && (
+          <Section title="Tools and how I used them" id="tools">
+            <ToolList tools={d.tools} />
+          </Section>
+        )
+      }
+
+      {
+        d.ai && (d.ai.assistance || d.ai.runtime) && (
+          <Section title="How AI fits in" id="ai">
+            <div class="ai">
+              {d.ai.assistance && (
+                <div class="ai__panel">
+                  <h3 class="ai__title">AI that helped me build it</h3>
+                  <p>{d.ai.assistance}</p>
+                </div>
+              )}
+              {d.ai.runtime && (
+                <div class="ai__panel">
+                  <h3 class="ai__title">AI inside the finished project</h3>
+                  <p>{d.ai.runtime.summary}</p>
+                  {d.ai.runtime.deployment && (
+                    <p class="ai__meta">{deploymentLabels[d.ai.runtime.deployment]}</p>
+                  )}
+                  {d.ai.runtime.techniques.length > 0 && (
+                    <ul class="ai__tags" aria-label="Techniques">
+                      {d.ai.runtime.techniques.map((t) => (
+                        <li>{techniqueLabels[t]}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {d.ai.runtime.tradeoffs.length > 0 && (
+                    <dl class="ai__tradeoffs">
+                      {d.ai.runtime.tradeoffs.map((t) => (
+                        <div>
+                          <dt>{humanize(t.topic)}</dt>
+                          <dd>{t.note}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  )}
+                </div>
+              )}
+            </div>
+          </Section>
+        )
+      }
+
+      {
+        hasReflection && reflection && (
+          <Section title="Reflection" id="reflection">
+            <div class="reflection">
+              {[
+                { title: 'What I learned', items: reflection.lessons },
+                { title: 'Limitations', items: reflection.limitations },
+                { title: 'What I would improve', items: reflection.improvements },
+              ]
+                .filter((g) => g.items.length > 0)
+                .map((g) => (
+                  <div>
+                    <h3 class="reflection__title">{g.title}</h3>
+                    <ul>
+                      {g.items.map((i) => (
+                        <li>{i}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+            </div>
+          </Section>
+        )
+      }
+
+      {
+        d.links.length > 0 && (
+          <Section title="Resources" id="resources">
+            <ul class="links">
+              {d.links.map((l) => (
+                <li>
+                  <a href={l.href}>
+                    <span class="links__kind">{linkLabels[l.kind]}</span>
+                    <span>{l.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Section>
+        )
+      }
+    </Container>
+  </article>
+</BaseLayout>
+
+<style>
+  .draft-banner {
+    padding-block: var(--space-3);
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
+    font-size: var(--text-sm);
+  }
+  .hero {
+    padding-block: var(--space-7) var(--space-6);
+  }
+  .hero__back {
+    font-size: var(--text-sm);
+  }
+  .hero__back a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+  .hero__back a:hover {
+    color: var(--color-accent);
+  }
+  .hero__eyebrow {
+    margin-top: var(--space-6);
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+  .hero__title {
+    margin-top: var(--space-3);
+    max-width: 22ch;
+    font-size: var(--text-3xl);
+  }
+  .hero__summary {
+    margin-block: var(--space-4) var(--space-6);
+    max-width: var(--width-prose);
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+  }
+  .glance {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--space-5);
+    margin-top: var(--space-7);
+  }
+  .glance__panel {
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-sm);
+  }
+  .glance__panel > * + * {
+    margin-top: var(--space-3);
+  }
+  .glance__title {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+  .glance__subtitle {
+    font-size: var(--text-sm);
+  }
+  .glance ul {
+    padding-left: 1.1rem;
+  }
+  .glance li + li {
+    margin-top: var(--space-2);
+  }
+  .glance__note {
+    color: var(--color-text-muted);
+  }
+  .glance__evidence {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+  }
+  .body {
+    margin-top: var(--space-5);
+  }
+  .figures {
+    display: grid;
+    gap: var(--space-7);
+  }
+  .ai {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-5);
+  }
+  .ai__panel {
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .ai__panel > * + * {
+    margin-top: var(--space-3);
+  }
+  .ai__title {
+    font-size: var(--text-lg);
+  }
+  .ai__meta {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+  .ai__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    list-style: none;
+  }
+  .ai__tags li {
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-accent-soft);
+    border-radius: 999px;
+    color: var(--color-accent-hover);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+  }
+  .ai__tradeoffs {
+    margin: var(--space-4) 0 0;
+    font-size: var(--text-sm);
+  }
+  .ai__tradeoffs div + div {
+    margin-top: var(--space-3);
+  }
+  .ai__tradeoffs dt {
+    font-weight: var(--weight-semibold);
+  }
+  .ai__tradeoffs dd {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+  .reflection {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--space-6);
+  }
+  .reflection__title {
+    font-size: var(--text-base);
+  }
+  .reflection ul {
+    margin-top: var(--space-3);
+    padding-left: 1.1rem;
+    color: var(--color-text-muted);
+  }
+  .reflection li + li {
+    margin-top: var(--space-2);
+  }
+  .links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    gap: var(--space-3);
+    padding: 0;
+    list-style: none;
+  }
+  .links a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    height: 100%;
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: border-color var(--duration-fast) var(--ease);
+  }
+  .links a:hover {
+    border-color: var(--color-accent);
+  }
+  .links__kind {
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+</style>

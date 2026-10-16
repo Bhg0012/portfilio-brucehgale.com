@@ -1,0 +1,113 @@
+---
+import { Image } from 'astro:assets';
+import ProjectMeta from './ProjectMeta.astro';
+import { humanize, isPublic, type Project } from '../lib/projects';
+
+interface Props {
+  project: Project;
+  headingLevel?: 'h2' | 'h3';
+}
+const { project, headingLevel: Heading = 'h3' } = Astro.props;
+const { title, summary, categories, cover, slug } = project.data;
+const href = `/work/${slug}/`;
+---
+
+<article class="card">
+  {
+    cover && (
+      <Image
+        src={cover.src}
+        alt=""
+        widths={[400, 640, 960]}
+        sizes="(min-width: 60rem) 34rem, 100vw"
+        class="card__image"
+      />
+    )
+  }
+  <div class="card__body">
+    <p class="card__eyebrow">
+      {categories.map(humanize).join(' · ')}
+      {!isPublic(project) && <span class="card__draft">{project.data.publication}</span>}
+    </p>
+    <Heading class="card__title">
+      <a href={href}>{title}</a>
+    </Heading>
+    <p class="card__summary">{summary}</p>
+    <ProjectMeta project={project} />
+  </div>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition:
+      border-color var(--duration-base) var(--ease),
+      box-shadow var(--duration-base) var(--ease);
+  }
+  .card:hover,
+  .card:focus-within {
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-md);
+  }
+  .card__image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface-muted);
+  }
+  .card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+  }
+  .card__eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+  .card__draft {
+    padding-inline: var(--space-2);
+    border-radius: var(--radius-sm);
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
+  }
+  .card__title {
+    font-size: var(--text-xl);
+  }
+  .card__title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  /* Whole card is clickable through the title link. */
+  .card__title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .card__title a:focus-visible {
+    outline: none;
+  }
+  .card:has(.card__title a:focus-visible) {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+  .card__summary {
+    flex: 1;
+    color: var(--color-text-muted);
+  }
+</style>

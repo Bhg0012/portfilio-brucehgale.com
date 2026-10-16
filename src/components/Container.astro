@@ -1,0 +1,26 @@
+---
+interface Props {
+  /** "page" for full layouts, "prose" for reading-width text. */
+  width?: 'page' | 'prose';
+  class?: string;
+}
+const { width = 'page', class: className } = Astro.props;
+---
+
+<div class:list={['container', `container--${width}`, className]}>
+  <slot />
+</div>
+
+<style>
+  .container {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .container--page {
+    max-width: calc(var(--width-page) + 2 * var(--gutter));
+  }
+  .container--prose {
+    max-width: calc(var(--width-prose) + 2 * var(--gutter));
+  }
+</style>

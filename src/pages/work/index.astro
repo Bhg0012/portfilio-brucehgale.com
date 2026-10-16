@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+import { getProjects } from '../../lib/projects';
+import { site } from '../../site.config';
+
+const projects = await getProjects();
+---
+
+<BaseLayout title="Work" description={`Projects by ${site.name}.`} noindex={projects.length === 0}>
+  <Container>
+    <header class="page-header">
+      <h1>Work</h1>
+    </header>
+    {
+      projects.length > 0 ? (
+        <ProjectGrid projects={projects} headingLevel="h2" />
+      ) : (
+        <p class="empty">Project case studies are being prepared and will appear here.</p>
+      )
+    }
+  </Container>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-block: var(--space-8) var(--space-6);
+  }
+  .page-header h1 {
+    font-size: var(--text-3xl);
+  }
+  .empty {
+    padding: var(--space-6);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-muted);
+  }
+</style>
