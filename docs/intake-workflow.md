@@ -1,32 +1,41 @@
 # Intake workflow: from source materials to a published project
 
-Raw materials (dossiers, PDFs, Word files, screenshots, notes) go into `intake/`, which Git ignores and the site never reads. Uploading a document is permission to analyze it, not to publish it. Only reviewed, approved content moves into `content/projects/` and `public/downloads/`.
+Raw materials (dossiers, PDFs, Word files, screenshots, notes) go into `intake/`, which Git ignores and the site never reads. A written record of every upload goes into `catalog/`, which Git tracks so it survives between sessions. Uploading a document is permission to analyze it, not to publish it. Only reviewed, approved content moves into `content/projects/` and `public/downloads/`.
 
 ## Folder conventions
 
 ```
-intake/
-  inbox/                  drop anything here first, in any shape
-  inventory.md            one table of everything received (from _templates/inventory.md)
-  <slug>/
-    sources/              original files for this project, renamed if helpful
-    assets/               candidate images before approval
-    notes.md              private working file (from _templates/project-notes.md)
+intake/                       raw files, not tracked, not backed up
+  inbox/                      drop anything here first, in any shape
+  <slug>/sources/             original files for one project
+  <slug>/assets/              candidate images before approval
+
+catalog/                      tracked, private (requires a private repository)
+  index.md                    every upload, with its source ID and where it's summarized
+  sources/S###-<name>.md      summary and extracted text of one upload
+  projects/<slug>.md          everything known about one project, citing source IDs
+  experience/<slug>.md        one job, internship, role, organization, or course
 ```
+
+Blank versions of the catalog files are in `catalog/_templates/`. See [catalog/README.md](../catalog/README.md).
+
+**Before committing anything in `catalog/`, confirm the GitHub repository is private.** If it is public, don't commit catalog content; tell Bruce.
 
 ## Steps
 
-### 1. Inventory
+### 1. Inventory and summarize every upload
 
-List every file, image, and link in `intake/inventory.md`: filename, type, date if known, a one-line description, and which project it belongs to. Extract embedded images from Word and PDF files into `intake/<slug>/assets/` so they can be reviewed individually.
+Give each upload the next source ID (`S001`, `S002`, ...) and add a row to `catalog/index.md`. Then create `catalog/sources/S###-<name>.md` from the template: a summary detailed enough to work without the original, key facts, a list of its images, plans kept separate from finished work, sensitive items, and the full extracted text for text-based documents. Extract embedded images from Word and PDF files into `intake/<slug>/assets/` so they can be reviewed individually.
 
-### 2. Group by project
+Do this for everything received, including material that won't become a project page. The catalog is the permanent record.
 
-Decide which materials describe the same project and assign each project a working slug (lowercase, hyphenated, descriptive: `regional-sales-dashboard`, not `project-1`). Move files into `intake/<slug>/sources/`. Note anything that doesn't clearly belong to a project.
+### 2. Group by project and experience
+
+Decide which materials describe the same project and assign each project a slug (lowercase, hyphenated, descriptive: `regional-sales-dashboard`, not `project-1`). Create `catalog/projects/<slug>.md` for each project. When material describes a job, internship, course, or organization rather than one project, create `catalog/experience/<slug>.md`, and link projects to the experience they came from. Move raw files into `intake/<slug>/sources/`. List anything unassigned at the bottom of `catalog/index.md`.
 
 ### 3. Extract the facts
 
-In `intake/<slug>/notes.md`, record with source references:
+In `catalog/projects/<slug>.md`, record with source IDs:
 - The problem, audience, objectives, and constraints
 - Bruce's role and specific contributions (separate from the team's or employer's)
 - Approach, decisions, and implementation details
@@ -40,9 +49,9 @@ Mark each item as completed, in progress, planned, or experimental. Plans and id
 
 ### 5. Match claims to evidence
 
-Every important claim, especially numbers, needs a source: a report, screenshot, repository, or Bruce's direct confirmation. Record the source in notes. Claims without support are either removed or marked as open questions for Bruce.
+Every important claim, especially numbers, needs a source: a report, screenshot, repository, or Bruce's direct confirmation. Record the source in the catalog project file. Claims without support are either removed or marked as open questions for Bruce.
 
-**When sources disagree:** record both versions and their sources in the "Conflicts" section of the notes. Use the most authoritative source (final deliverable over draft, data over recollection, later over earlier when it's a correction), and flag the conflict for Bruce. Never silently blend incompatible descriptions.
+**When sources disagree:** record both versions and their sources in the "Conflicts" section of the catalog project file. Use the most authoritative source (final deliverable over draft, data over recollection, later over earlier when it's a correction), and flag the conflict for Bruce. Never silently blend incompatible descriptions.
 
 ### 6. Gaps and screenshots
 

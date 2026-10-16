@@ -3,7 +3,7 @@
  *
  * 1. Every internal link and asset reference resolves to a built file.
  * 2. No unpublished project (draft or review) was built.
- * 3. Nothing from intake/ leaked into the output.
+ * 3. Nothing from intake/ or catalog/ leaked into the output.
  *
  * Run after `npm run build` (or use `npm run validate`, which does both).
  */
@@ -68,13 +68,14 @@ if (existsSync(PROJECTS)) {
   }
 }
 
-// 3. No intake material in the output.
+// 3. No intake or catalog material in the output.
 for (const file of files) {
-  if (/(^|\/)intake(\/|$)/.test(relative(DIST, file))) errors.push(`Intake path in output: ${file}`);
+  if (/(^|\/)(intake|catalog)(\/|$)/.test(relative(DIST, file))) errors.push(`Private path in output: ${file}`);
 }
 for (const file of htmlFiles) {
-  if (readFileSync(file, 'utf8').includes('/intake/')) {
-    errors.push(`${relative(DIST, file)}: references an intake/ path`);
+  const html = readFileSync(file, 'utf8');
+  for (const dir of ['/intake/', '/catalog/']) {
+    if (html.includes(dir)) errors.push(`${relative(DIST, file)}: references a ${dir} path`);
   }
 }
 

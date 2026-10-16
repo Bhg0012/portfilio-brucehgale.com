@@ -35,7 +35,8 @@ Or run the steps individually:
 ```
 content/projects/<slug>/   publication-ready project content and its approved images
 public/downloads/          intentionally public files (resume, approved reports)
-intake/                    raw source materials and private notes (not tracked by Git)
+intake/                    raw uploaded files (not tracked by Git)
+catalog/                   private record of every upload, by source, project, and job/experience
 src/
   content.config.ts        project content schema (single source of truth)
   site.config.ts           name, verified profile facts, contact links, resume path
@@ -51,7 +52,7 @@ docs/                      content model, intake workflow, architecture, templat
 ## Adding project materials
 
 1. **Drop raw materials in `intake/inbox/`**: Word documents, PDFs, Markdown, screenshots, slide decks, notes, and a list of relevant links. Keep originals elsewhere too; `intake/` isn't tracked or backed up.
-2. Materials are sorted into `intake/<slug>/` and processed following [docs/intake-workflow.md](docs/intake-workflow.md): inventory, extraction, evidence check, confidentiality review, gaps and needed screenshots.
+2. Every upload is logged in [`catalog/index.md`](catalog/index.md) and summarized (with extracted text) in `catalog/sources/`, then organized into `catalog/projects/` and `catalog/experience/` (jobs, internships, courses). This record is tracked in Git, so it survives after raw files are gone. Processing follows [docs/intake-workflow.md](docs/intake-workflow.md): evidence check, confidentiality review, gaps and needed screenshots.
 3. A draft page is written to `content/projects/<slug>/index.md` (from [docs/project-template.md](docs/project-template.md)) with approved images in `content/projects/<slug>/images/`.
 4. The draft is reviewed in `npm run dev` and checked against the sources. Status moves `draft` → `review`.
 5. After Bruce approves, `publication: published` makes it part of the live site at `/work/<slug>/`.
@@ -75,6 +76,7 @@ Static output, no server or environment variables. On Cloudflare: build command 
 
 ## Next steps
 
+- [ ] Make the GitHub repository private (required before catalog summaries are committed)
 - [ ] Upload project dossiers and screenshots to `intake/inbox/`
 - [ ] Process materials into draft project pages
 - [ ] Choose featured projects and their order

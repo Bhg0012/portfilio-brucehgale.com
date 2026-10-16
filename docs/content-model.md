@@ -85,7 +85,7 @@ Use H2 (`##`) headings. Pick what the sources support; there is no required set.
 
 ## What never goes in content files
 
-Content files are public. Keep these in `intake/<slug>/` instead:
+Content files are public. Keep these in `catalog/projects/<slug>.md` instead:
 
 - Source-document references and page numbers used to verify claims
 - Open questions, uncertainties, and conflicts between sources

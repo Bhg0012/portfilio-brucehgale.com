@@ -41,7 +41,8 @@ Next: process uploaded dossiers per `docs/intake-workflow.md`, draft project con
 
 | Path                               | Contents                                                       | Git     |
 | ---------------------------------- | -------------------------------------------------------------- | ------- |
-| `intake/`                          | Raw dossiers, screenshots, private notes, inventories          | Ignored (except README and `_templates/`) |
+| `intake/`                          | Raw uploaded files (dossiers, PDFs, screenshots)               | Ignored (except README) |
+| `catalog/`                         | Private record of every upload: index, per-source summaries and extracted text, per-project and per-experience (job, internship, course) files | Tracked; requires a private repo |
 | `content/projects/<slug>/index.md` | Publication-ready project content                              | Tracked |
 | `content/projects/<slug>/images/`  | Approved project images (optimized at build)                   | Tracked |
 | `public/downloads/`                | Intentionally public files (resume, approved reports)          | Tracked |
@@ -51,7 +52,9 @@ Next: process uploaded dossiers per `docs/intake-workflow.md`, draft project con
 | `src/styles/tokens.css`            | Design tokens                                                  | Tracked |
 | `docs/`                            | Content model, intake workflow, architecture, project template | Tracked |
 
-Raw intake material never goes into `content/` or `public/` without review. Private source references, conflicts, and editorial notes stay in `intake/<slug>/notes.md`, never in content files.
+Raw intake material never goes into `content/` or `public/` without review. Private source references, conflicts, and editorial notes stay in `catalog/projects/<slug>.md`, never in content files.
+
+**Record every upload in `catalog/` (permanent).** Raw files in `intake/` are lost when a cloud session ends, so each upload gets a source ID, a row in `catalog/index.md`, and a `catalog/sources/S###-<name>.md` file with a summary and extracted text. Facts are then synthesized into `catalog/projects/<slug>.md` and `catalog/experience/<slug>.md` with source IDs. Start each new session by reading `catalog/index.md`. **Before committing catalog content, confirm the GitHub repository is private** (it must not be public); if it isn't, stop and tell Bruce. Never store credentials in the catalog.
 
 ## Conventions
 
@@ -80,4 +83,5 @@ npm run preview      # serve the production build locally
 - `docs/content-model.md`: how to use each project field
 - `docs/project-template.md`: blank project file to copy
 - `docs/intake-workflow.md`: turning uploaded materials into approved pages
+- `catalog/README.md`: how uploads are recorded and organized
 - `docs/site-architecture.md`: pages, project page layout, design foundation, hosting

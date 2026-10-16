@@ -1,26 +1,22 @@
-# <Project title> (working notes)
-
-Private. Never copy this file into content/ or public/.
+# <Project title>
 
 - Slug: 
+- Related experience: [slug](../experience/slug.md) / personal
+- Sources: S###, S###
 - Work status: completed / in progress / ongoing / prototype / concept
-- Write-up status: not started / drafting / ready for Bruce's review / approved
+- Website page: not started / draft / review / published (`content/projects/<slug>/`)
 
-## Sources
+## Summary
 
-| ID | File or link | What it is | Authority (final deliverable, draft, notes, recollection) |
-| -- | ------------ | ---------- | -------------------------------------------------------- |
-| S1 |              |            |                                                          |
+Two or three sentences on what the project is and why it matters.
 
-## Extracted facts
-
-Cite source IDs. Mark anything planned or experimental.
+## Facts (with source IDs)
 
 - Problem and audience:
 - Objectives and constraints:
 - Bruce's role:
 - Bruce's specific contributions:
-- Team or employer contributions (not Bruce's):
+- Team, employer, or client contributions (not Bruce's):
 - Approach and key decisions:
 - Implementation:
 - Tools and what each was used for:
@@ -28,12 +24,12 @@ Cite source IDs. Mark anything planned or experimental.
 - AI inside the finished project:
 - Source hosting / app hosting / data storage:
 - Results and deliverables:
+- Dates:
 
 ## Claims and evidence
 
 | Claim | Evidence (source ID, page, screenshot) | Verified? |
 | ----- | -------------------------------------- | --------- |
-|       |                                        |           |
 
 ## Conflicts between sources
 
@@ -46,8 +42,8 @@ Names, data, code, or images that may not be public, and what was decided.
 
 ## Visuals
 
-| Candidate image | Shows | Use? | Needs cropping or redaction? | Alt text | Caption |
-| --------------- | ----- | ---- | ---------------------------- | -------- | ------- |
+| Candidate image | Source | Shows | Use? | Needs cropping or redaction? | Alt text | Caption |
+| --------------- | ------ | ----- | ---- | ---------------------------- | -------- | ------- |
 
 ## Screenshots still needed
 
