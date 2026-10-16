@@ -1,57 +1,94 @@
 ---
 import Container from './Container.astro';
 import { site } from '../site.config';
+import { getNavLinks } from '../lib/navigation';
 
-const { linkedin, github, email } = site.contact;
+const links = await getNavLinks();
+const { email, linkedin, github } = site.contact;
+const contactLinks = [
+  email && { href: `mailto:${email}`, label: 'Email', rel: undefined },
+  linkedin && { href: linkedin, label: 'LinkedIn', rel: 'me' },
+  github && { href: github, label: 'GitHub', rel: 'me' },
+].filter((l): l is { href: string; label: string; rel: string | undefined } => Boolean(l));
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <Container class="site-footer__inner">
-    <p>© {year} {site.name}</p>
-    {
-      (email || linkedin || github) && (
+  <Container>
+    <div class="site-footer__top">
+      <div class="site-footer__id">
+        <p class="site-footer__name">{site.name}</p>
+        <p class="site-footer__line">
+          {site.profile.program} · {site.profile.school}
+        </p>
+      </div>
+      <nav aria-label="Footer">
         <ul class="site-footer__links">
-          {email && (
-            <li>
-              <a href={`mailto:${email}`}>Email</a>
-            </li>
-          )}
-          {linkedin && (
-            <li>
-              <a href={linkedin} rel="me">LinkedIn</a>
-            </li>
-          )}
-          {github && (
-            <li>
-              <a href={github} rel="me">GitHub</a>
-            </li>
-          )}
+          <li><a href="/">Home</a></li>
+          {
+            links.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))
+          }
+          {
+            site.resume && (
+              <li>
+                <a href={site.resume}>Resume</a>
+              </li>
+            )
+          }
+          {
+            contactLinks.map((link) => (
+              <li>
+                <a href={link.href} rel={link.rel}>
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
         </ul>
-      )
-    }
+      </nav>
+    </div>
+    <p class="site-footer__copy">© {year} {site.name}</p>
   </Container>
 </footer>
 
 <style>
   .site-footer {
-    margin-top: var(--space-9);
+    margin-top: var(--section-gap);
     border-top: 1px solid var(--color-border);
     color: var(--color-text-muted);
     font-size: var(--text-sm);
   }
-  .site-footer :global(.site-footer__inner) {
+  .site-footer__top {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: var(--space-3) var(--space-5);
-    padding-block: var(--space-6);
+    gap: var(--space-5) var(--space-7);
+    padding-top: var(--space-7);
+  }
+  .site-footer__name {
+    color: var(--color-text);
+    font-weight: var(--weight-semibold);
   }
   .site-footer__links {
     display: flex;
-    gap: var(--space-5);
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+  .site-footer__links a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+  .site-footer__links a:hover {
+    color: var(--color-accent);
+  }
+  .site-footer__copy {
+    padding-block: var(--space-6) var(--space-7);
   }
 </style>

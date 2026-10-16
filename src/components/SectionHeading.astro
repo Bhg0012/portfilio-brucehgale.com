@@ -1,0 +1,69 @@
+---
+/** Heading block for a page section: eyebrow, title, optional intro and action link. */
+interface Props {
+  id: string;
+  title: string;
+  eyebrow?: string;
+  intro?: string;
+  action?: { href: string; label: string };
+  level?: 'h1' | 'h2';
+}
+const { id, title, eyebrow, intro, action, level: Heading = 'h2' } = Astro.props;
+---
+
+<div class="heading">
+  <div class="heading__text">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <Heading id={id} class:list={['heading__title', `heading__title--${Heading}`]}>{title}</Heading>
+    {intro && <p class="heading__intro">{intro}</p>}
+  </div>
+  {
+    action && (
+      <a class="heading__action" href={action.href}>
+        {action.label}
+        <span aria-hidden="true">→</span>
+      </a>
+    )
+  }
+</div>
+
+<style>
+  .heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-4) var(--space-6);
+    margin-bottom: var(--space-6);
+  }
+  .heading__text {
+    display: grid;
+    gap: var(--space-3);
+    max-width: var(--width-prose);
+  }
+  .heading__title--h2 {
+    font-size: var(--text-2xl);
+  }
+  .heading__title--h1 {
+    font-size: var(--text-3xl);
+  }
+  .heading__intro {
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+  }
+  .heading__action {
+    display: inline-flex;
+    gap: var(--space-2);
+    padding-block: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+  }
+  .heading__action span {
+    transition: transform var(--duration-fast) var(--ease);
+  }
+  .heading__action:hover span {
+    transform: translateX(3px);
+  }
+</style>

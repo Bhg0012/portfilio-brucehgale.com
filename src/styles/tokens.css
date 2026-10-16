@@ -1,47 +1,60 @@
 /*
  * Design tokens. Change the look of the whole site here.
- * The direction is intentionally restrained until real project assets arrive:
- * warm off-white surfaces, charcoal text, one accent, quiet borders.
- * Contrast notes: --color-text, --color-text-muted, and --color-accent all
- * meet WCAG AA (4.5:1) on both --color-bg and --color-surface.
+ *
+ * Direction: warm off-white surfaces, charcoal text, one navy accent that
+ * echoes the portrait, quiet borders, generous spacing, Inter throughout.
+ * Contrast: every text color below meets WCAG AA (4.5:1) on the backgrounds
+ * it is used on; scripts/check-contrast.mjs verifies the pairs.
  */
 :root {
-  /* Color */
-  --color-bg: #faf8f4;
-  --color-surface: #ffffff;
-  --color-surface-muted: #f3f0ea;
-  --color-text: #1f2328;
-  --color-text-muted: #545a62;
-  --color-border: #e4dfd6;
-  --color-border-strong: #cfc8bc;
-  --color-accent: #1f5673;
-  --color-accent-hover: #17435a;
-  --color-accent-soft: #e6eef2;
+  /* Color: light surfaces */
+  --color-bg: #f7f5f0;
+  --color-surface: #fffefb;
+  --color-surface-muted: #efebe3;
+  --color-text: #1b1e23;
+  --color-text-muted: #565c66;
+  --color-border: #e4dfd5;
+  --color-border-strong: #c9c1b3;
+
+  /* Color: accent (navy) */
+  --color-accent: #24427a;
+  --color-accent-hover: #1a3260;
+  --color-accent-soft: #e6ebf4;
   --color-on-accent: #ffffff;
-  --color-focus: #1f5673;
-  --color-warning-bg: #fdf3d8;
-  --color-warning-text: #5c4300;
+  --color-focus: #24427a;
+
+  /* Color: dark band (used once per page at most) */
+  --color-ink: #1b1e23;
+  --color-on-ink: #f7f5f0;
+  --color-on-ink-muted: #b6bbc4;
+  --color-ink-border: #3a3f47;
+
+  /* Color: notices */
+  --color-notice-bg: #fbf1d6;
+  --color-notice-text: #573f00;
 
   /* Typography */
-  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    sans-serif;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --text-xs: 0.8125rem;
   --text-sm: 0.9375rem;
   --text-base: 1.0625rem;
-  --text-lg: 1.25rem;
-  --text-xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
-  --text-2xl: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
-  --text-3xl: clamp(2.25rem, 1.6rem + 2.8vw, 3.5rem);
-  --leading-tight: 1.15;
-  --leading-snug: 1.35;
+  --text-lg: 1.1875rem;
+  --text-xl: clamp(1.3125rem, 1.2rem + 0.5vw, 1.5rem);
+  --text-2xl: clamp(1.75rem, 1.45rem + 1.3vw, 2.375rem);
+  --text-3xl: clamp(2.25rem, 1.7rem + 2.4vw, 3.5rem);
+  --text-display: clamp(2.75rem, 1.9rem + 4vw, 5rem);
+  --leading-tight: 1.08;
+  --leading-snug: 1.4;
   --leading-normal: 1.65;
   --weight-normal: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
   --weight-bold: 700;
+  --tracking-display: -0.035em;
   --tracking-tight: -0.02em;
-  --tracking-wide: 0.06em;
+  --tracking-wide: 0.08em;
 
   /* Spacing (4px base) */
   --space-1: 0.25rem;
@@ -53,22 +66,28 @@
   --space-7: 3rem;
   --space-8: 4rem;
   --space-9: 6rem;
+  --space-10: 8rem;
+  --section-gap: clamp(4rem, 3rem + 4vw, 7rem);
 
   /* Layout */
   --width-page: 72rem;
   --width-prose: 42rem;
   --gutter: clamp(1rem, 4vw, 2rem);
+  --header-height: 4.25rem;
 
   /* Shape and depth */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 14px;
-  --shadow-sm: 0 1px 2px rgb(31 35 40 / 0.06);
-  --shadow-md: 0 4px 16px rgb(31 35 40 / 0.08);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgb(27 30 35 / 0.05);
+  --shadow-md: 0 2px 4px rgb(27 30 35 / 0.04), 0 8px 24px rgb(27 30 35 / 0.07);
+  --shadow-lg: 0 4px 8px rgb(27 30 35 / 0.04), 0 24px 48px rgb(27 30 35 / 0.1);
 
   /* Motion */
-  --duration-fast: 120ms;
-  --duration-base: 200ms;
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
   --ease: cubic-bezier(0.2, 0, 0, 1);
 }
 

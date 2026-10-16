@@ -38,6 +38,8 @@ Concepts and prototypes may be published, but the page labels their status so pl
 
 Use H2 (`##`) headings. Pick what the sources support; there is no required set.
 
+Writing tips that help skimmers: lead with the business problem, not the dataset; use "I" for Bruce's own work and name the team's share; and where it fits, make headings carry the finding ("Discount codes drove repeat orders, not new customers") so the case study reads from its headings alone.
+
 | Project type                   | Useful sections                                                                 |
 | ------------------------------ | ------------------------------------------------------------------------------- |
 | Data analysis / dashboard      | Context, Data, Approach, Key findings, Recommendations, How it was built         |

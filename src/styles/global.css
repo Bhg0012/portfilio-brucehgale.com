@@ -9,6 +9,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-height) + var(--space-4));
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -37,11 +38,17 @@ body {
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--leading-normal);
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 main {
   flex: 1;
+}
+
+main:focus {
+  outline: none;
 }
 
 h1,
@@ -53,6 +60,10 @@ h4 {
   letter-spacing: var(--tracking-tight);
   font-weight: var(--weight-semibold);
   text-wrap: balance;
+}
+
+h1 {
+  letter-spacing: var(--tracking-display);
 }
 
 p,
@@ -94,6 +105,16 @@ a:hover {
 
 ::selection {
   background: var(--color-accent-soft);
+  color: var(--color-text);
+}
+
+/* Small uppercase label used above headings and in metadata */
+.eyebrow {
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
 }
 
 .visually-hidden {

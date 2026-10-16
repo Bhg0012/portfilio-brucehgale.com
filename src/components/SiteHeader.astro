@@ -1,27 +1,21 @@
 ---
 import Container from './Container.astro';
-import { site, hasContact } from '../site.config';
-import { getProjects } from '../lib/projects';
+import { site } from '../site.config';
+import { getNavLinks } from '../lib/navigation';
 
-const hasProjects = (await getProjects()).length > 0;
-
-// Navigation lists only destinations that exist right now.
-const links = [
-  hasProjects && { href: '/work/', label: 'Work' },
-  { href: '/about/', label: 'About' },
-  hasContact && { href: '/about/#contact', label: 'Contact' },
-  site.resume && { href: site.resume, label: 'Resume' },
-].filter((l): l is { href: string; label: string } => Boolean(l));
-
+const links = await getNavLinks();
 const path = Astro.url.pathname;
-const isCurrent = (href: string) => href !== '/' && !href.includes('#') && path.startsWith(href);
+const isCurrent = (href: string) => path === href || path.startsWith(href);
 ---
 
 <header class="site-header">
   <Container class="site-header__inner">
-    <a href="/" class="site-header__name" aria-current={path === '/' ? 'page' : undefined}>{site.name}</a>
+    <a href="/" class="brand" aria-current={path === '/' ? 'page' : undefined}>
+      <span class="brand__mark" aria-hidden="true">BG</span>
+      <span class="brand__name">{site.name}</span>
+    </a>
     <nav aria-label="Main">
-      <ul class="site-header__links">
+      <ul class="nav">
         {
           links.map((link) => (
             <li>
@@ -31,6 +25,15 @@ const isCurrent = (href: string) => href !== '/' && !href.includes('#') && path.
             </li>
           ))
         }
+        {
+          site.resume && (
+            <li>
+              <a href={site.resume} class="nav__resume">
+                Resume
+              </a>
+            </li>
+          )
+        }
       </ul>
     </nav>
   </Container>
@@ -38,49 +41,94 @@ const isCurrent = (href: string) => href !== '/' && !href.includes('#') && path.
 
 <style>
   .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
     border-bottom: 1px solid var(--color-border);
-    background: var(--color-bg);
+    background: rgb(247 245 240 / 0.86);
+    backdrop-filter: saturate(160%) blur(12px);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);
   }
   .site-header :global(.site-header__inner) {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-2) var(--space-5);
-    min-height: 4rem;
-    padding-block: var(--space-3);
+    gap: var(--space-4);
+    min-height: var(--header-height);
   }
-  .site-header__name {
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
     color: var(--color-text);
-    font-weight: var(--weight-semibold);
-    font-size: var(--text-lg);
-    letter-spacing: var(--tracking-tight);
     text-decoration: none;
   }
-  .site-header__links {
+  .brand:hover {
+    color: var(--color-text);
+  }
+  .brand__mark {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-size: 0.75rem;
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.02em;
+  }
+  .brand__name {
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    white-space: nowrap;
+  }
+  .nav {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-1) var(--space-5);
+    align-items: center;
+    gap: var(--space-1);
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .site-header__links a {
-    display: inline-block;
-    padding-block: var(--space-2);
+  .nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-pill);
     color: var(--color-text-muted);
     font-size: var(--text-sm);
     font-weight: var(--weight-medium);
     text-decoration: none;
+    transition:
+      color var(--duration-fast) var(--ease),
+      background-color var(--duration-fast) var(--ease);
   }
-  .site-header__links a:hover,
-  .site-header__links a[aria-current='page'] {
+  .nav a:hover {
+    color: var(--color-text);
+    background: var(--color-surface-muted);
+  }
+  .nav a[aria-current='page'] {
+    color: var(--color-text);
+    background: var(--color-surface-muted);
+  }
+  .nav .nav__resume {
+    margin-left: var(--space-2);
+    border: 1px solid var(--color-border-strong);
     color: var(--color-text);
   }
-  .site-header__links a[aria-current='page'] {
-    text-decoration: underline;
-    text-decoration-color: var(--color-accent);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.5em;
+  /* Small phones: drop the monogram so the name and all links fit on one line. */
+  @media (max-width: 26rem) {
+    .brand__mark {
+      display: none;
+    }
+    .nav {
+      gap: 0;
+    }
+    .nav a {
+      padding: 0 var(--space-2);
+    }
   }
 </style>

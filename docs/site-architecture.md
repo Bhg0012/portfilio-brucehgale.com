@@ -1,34 +1,53 @@
 # Site architecture and design foundation
 
+## Structure rationale
+
+Recruiters skim, often for seconds, so the first screen has to say who Bruce is and where to look next. Hiring managers who keep reading want the business problem, Bruce's specific role, the approach, and the result. Common guidance for analytics and marketing portfolios points the same way: lead with the problem, feature three to six strong projects with screenshots, make contact and resume easy to reach from every page, and keep everything readable on a phone. The structure below follows that.
+
 ## Pages
 
-| URL             | Source                          | Purpose                                                        |
-| --------------- | ------------------------------- | -------------------------------------------------------------- |
-| `/`             | `src/pages/index.astro`         | Who Bruce is, selected work, capabilities shown by that work   |
-| `/work/`        | `src/pages/work/index.astro`    | All published projects                                         |
-| `/work/<slug>/` | `src/pages/work/[slug].astro`   | One case study: quick overview first, depth below              |
-| `/about/`       | `src/pages/about.astro`         | Background, resume, and contact once verified                  |
-| `/404`          | `src/pages/404.astro`           | Not-found page                                                 |
-| `/robots.txt`, `/sitemap-index.xml` | generated   | Search-engine metadata                                         |
+| URL                     | Source                             | Purpose                                                              |
+| ----------------------- | ---------------------------------- | -------------------------------------------------------------------- |
+| `/`                     | `src/pages/index.astro`            | Hero, selected work, skills backed by projects, tools, background, contact |
+| `/work/`                | `src/pages/work/index.astro`       | All published case studies                                           |
+| `/work/<slug>/`         | `src/pages/work/[slug].astro`      | One case study: quick overview first, depth below                    |
+| `/about/`               | `src/pages/about.astro`            | Story, education, experience, skills, interests                      |
+| `/contact/`             | `src/pages/contact.astro`          | Contact methods and resume download                                  |
+| `/preview/case-study/`  | `src/pages/preview/[page].astro`   | Case-study layout preview; built only in placeholder mode            |
+| `/404`                  | `src/pages/404.astro`              | Not-found page                                                       |
+| `/robots.txt`, `/sitemap-index.xml` | generated              | Search-engine metadata                                               |
+
+### Placeholder mode
+
+`placeholders: true` in `src/site.config.ts` turns on a pre-launch preview:
+
+- Dashed "Coming soon" boxes (`src/components/Slot.astro`) mark where each missing piece will go and name the file it will come from.
+- Real content always replaces its placeholder automatically.
+- A banner explains the preview, `/preview/case-study/` shows the case-study layout, and every page is marked `noindex`.
+- `npm run verify` prints a reminder while it is on.
+
+Set it to `false` at launch. The site then shows only real content, and navigation hides anything without a destination.
 
 ### Navigation follows content
 
-- **Work** appears in the header only when at least one project is published.
-- **Contact** appears only after a contact method is set in `src/site.config.ts`.
-- **Resume** appears only after `resume` is set and the file exists in `public/downloads/`.
-- `npm run verify` fails the build check if any internal link points to a missing page or file.
+- **Work** appears when at least one project is published (or in placeholder mode).
+- **Contact** appears once a contact method is set in `src/site.config.ts` (or in placeholder mode).
+- **Resume** appears in the header, hero, footer, and contact page once `resume` is set and the PDF is in `public/downloads/`.
+- `npm run verify` fails if any internal link points to a missing page or file.
 
-### Homepage (planned)
+### Homepage
 
-The homepage currently shows only verified facts. Once projects exist it should connect:
+1. **Hero:** name, verified education line, positioning statement (to be written), focus areas, primary action (View my work), secondary (Get in touch), resume, and portrait.
+2. **Selected work:** up to three `featured: true` projects, ordered by `order`.
+3. **Skills, backed by projects:** the seven capabilities from Bruce's brief, each listing the projects that demonstrate it. Without placeholders, only capabilities with supporting projects appear.
+4. **Toolkit:** generated from every project's `tools`, so each tool shown is backed by real work.
+5. **Background:** education (verified) and experience (to come).
+6. **Contact band:** one clear next step.
 
-1. Introduction: who Bruce is and the problems Bruce can help solve
-2. Selected work: `featured: true` projects, ordered by `order`
-3. Capabilities: generated from project `capabilities`, each linked to its supporting projects
-4. Relevant background
-5. A clear next action (view work, contact, resume)
+### Profile photo and share image
 
-Sections 2 and 3 already render automatically when content exists. Sections 1, 4, and 5 need Bruce's approved messaging.
+- Portrait: `src/assets/profile/bruce-gale-portrait.jpg` (metadata stripped), referenced through `src/lib/profile.ts` and optimized at build.
+- Default link preview: `public/social-card.jpg` (1200x630), generated by `python3 scripts/make-social-card.py`. Re-run it if the portrait or profile line changes. Project pages use their cover image instead.
 
 ### Project page structure
 
@@ -52,8 +71,8 @@ Not built. Add category filtering on `/work/` only if the collection grows past 
 
 Tokens live in [`src/styles/tokens.css`](../src/styles/tokens.css); base and long-form text styles in [`src/styles/global.css`](../src/styles/global.css). Components use tokens instead of raw values.
 
-- **Palette:** warm off-white background, white surfaces, charcoal text, one deep blue accent, soft borders. Text and accent colors meet WCAG AA contrast on both background colors.
-- **Typography:** system font stack for now (fast, no external requests). Revisit once real assets set the tone; a single self-hosted variable font is the likely upgrade.
+- **Palette:** warm off-white background, warm white surfaces, charcoal text, one navy accent that echoes the portrait, soft borders, and at most one dark contact band per page. `npm run contrast` checks every text/background pair against WCAG AA.
+- **Typography:** Inter (self-hosted variable font with optical sizing, via `@fontsource-variable/inter`), preloaded for fast first paint. Large display sizes use tight tracking.
 - **Layout:** 72rem page width, 42rem reading width, fluid gutters. Grids use `auto-fill` so they adapt without breakpoints.
 - **Accessibility:** skip link, visible focus outlines, semantic landmarks and headings, alt text required by schema, `prefers-reduced-motion` respected.
 - **Images:** optimized to WebP with responsive sizes; cover images also produce a 1200px JPEG for link previews.
@@ -65,8 +84,11 @@ Tokens live in [`src/styles/tokens.css`](../src/styles/tokens.css); base and lon
 | `BaseLayout`         | HTML shell, SEO and social metadata, header, footer      |
 | `SiteHeader` / `SiteFooter` | Navigation and footer links that adapt to content |
 | `Container`          | Page or reading-width wrapper                            |
-| `Button`             | Link styled as primary or secondary action               |
-| `ProjectCard` / `ProjectGrid` | Project summaries on home and work pages        |
+| `Button`             | Link styled as a primary, secondary, or dark-band action |
+| `SectionHeading`     | Eyebrow, title, intro, and optional action link          |
+| `ContactBand`        | Closing call to action on the home and About pages       |
+| `Slot`               | Placeholder box (placeholder mode only)                  |
+| `ProjectCard` / `ProjectGrid` | Project summaries; placeholder cards in preview mode |
 | `ProjectMeta`        | Context, course, role, team, timeframe, status           |
 | `Section`            | Titled case-study section                                |
 | `Figure`             | Optimized image with optional caption                    |

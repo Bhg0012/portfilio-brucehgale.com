@@ -1,91 +1,300 @@
 ---
 /*
- * About page. Contains only verified facts for now. Background, interests,
- * and contact details are added as Bruce confirms them (src/site.config.ts).
+ * About page: verified facts only. Story, experience, and interests are
+ * added from approved material; until then placeholder mode marks the spots.
  */
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
-import Button from '../components/Button.astro';
-import { site, hasContact } from '../site.config';
+import SectionHeading from '../components/SectionHeading.astro';
+import Slot from '../components/Slot.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { getProjects, toolsFrom } from '../lib/projects';
+import { profilePhoto } from '../lib/profile';
+import { site } from '../site.config';
 
-const { email, linkedin, github } = site.contact;
+const P = site.placeholders;
+const tools = toolsFrom(await getProjects());
 ---
 
-<BaseLayout title="About" description={`About ${site.name}.`}>
-  <Container width="prose">
-    <header class="page-header">
-      <h1>About</h1>
-    </header>
-    <div class="prose">
-      <p>
-        I'm {site.name}, a {site.profile.program} student at {site.profile.school} with a minor in {
-          site.profile.minor
-        }.
-      </p>
-    </div>
-
-    {
-      site.resume && (
-        <p class="resume">
-          <Button href={site.resume} download>
-            Download resume (PDF)
-          </Button>
+<BaseLayout title="About" description={`About ${site.name}, ${site.profile.program} student at ${site.profile.school}.`}>
+  <section class="intro" aria-labelledby="about-title">
+    <Container class="intro__inner">
+      <div class="intro__text">
+        <p class="eyebrow">About</p>
+        <h1 id="about-title" class="intro__title">Hi, I'm {site.name.split(' ')[0]}.</h1>
+        <p class="intro__lede">
+          I'm a {site.profile.program} student at {site.profile.school} with a minor in {site.profile.minor}.
         </p>
-      )
-    }
+        {
+          P && (
+            <Slot
+              title="My story"
+              text="A few short paragraphs: what drew me to analytics and marketing, the kind of problems I like working on, how I use AI in my work, and what I want to do next."
+              source="src/pages/about.astro"
+            />
+          )
+        }
+      </div>
+      <figure class="intro__photo">
+        <Image
+          src={profilePhoto.src}
+          alt={profilePhoto.alt}
+          widths={[320, 480, 640, 800]}
+          sizes="(min-width: 80rem) 22rem, (min-width: 48rem) 28vw, 16rem"
+          loading="eager"
+        />
+      </figure>
+    </Container>
+  </section>
 
-    {
-      hasContact && (
-        <section id="contact" class="contact" aria-labelledby="contact-heading">
-          <h2 id="contact-heading">Contact</h2>
-          <ul>
-            {email && (
-              <li>
-                <a href={`mailto:${email}`}>{email}</a>
+  <section class="block" aria-labelledby="education">
+    <Container>
+      <SectionHeading id="education" eyebrow="Education" title={site.profile.school} />
+      <div class="grid">
+        <article class="panel">
+          <p class="panel__label">Major</p>
+          <p class="panel__value">{site.profile.program}</p>
+        </article>
+        <article class="panel">
+          <p class="panel__label">Minor</p>
+          <p class="panel__value">{site.profile.minor}</p>
+        </article>
+        {
+          site.profile.graduation ? (
+            <article class="panel">
+              <p class="panel__label">Expected graduation</p>
+              <p class="panel__value">{site.profile.graduation}</p>
+            </article>
+          ) : (
+            P && <Slot title="Expected graduation" source="src/site.config.ts → profile.graduation" />
+          )
+        }
+      </div>
+      {
+        P && (
+          <div class="grid grid--wide">
+            <Slot
+              title="Relevant coursework"
+              text="Courses that connect to the work on this site, linked to class projects where they exist."
+              source="catalog/experience/ → approved details"
+            />
+            <Slot
+              title="Honors, organizations, and activities"
+              text="Confirmed items only, with roles and dates."
+              source="catalog/experience/ → approved details"
+            />
+          </div>
+        )
+      }
+    </Container>
+  </section>
+
+  {
+    P && (
+      <section class="block" aria-labelledby="experience">
+        <Container>
+          <SectionHeading
+            id="experience"
+            eyebrow="Experience"
+            title="Where I've worked"
+            intro="Jobs and internships, most recent first."
+          />
+          <ol class="timeline" role="list">
+            {[1, 2].map((n) => (
+              <li class="timeline__item">
+                <span class="timeline__dot" aria-hidden="true" />
+                <Slot
+                  title={`Role ${n}: organization, title, and dates`}
+                  text="What I was responsible for and what I accomplished, with links to related case studies. Organizations are named only with approval."
+                  source="catalog/experience/<slug>.md"
+                />
               </li>
-            )}
-            {linkedin && (
-              <li>
-                <a href={linkedin} rel="me">LinkedIn</a>
-              </li>
-            )}
-            {github && (
-              <li>
-                <a href={github} rel="me">GitHub</a>
-              </li>
-            )}
-          </ul>
-        </section>
-      )
-    }
-  </Container>
+            ))}
+          </ol>
+        </Container>
+      </section>
+    )
+  }
+
+  {
+    (tools.length > 0 || P) && (
+      <section class="block" aria-labelledby="skills">
+        <Container>
+          <SectionHeading id="skills" eyebrow="Skills" title="Tools I've used" />
+          {tools.length > 0 ? (
+            <ul class="tools" role="list">
+              {tools.map((tool) => (
+                <li>
+                  <span class="tools__name">{tool.name}</span>
+                  <span class="tools__where">
+                    {tool.projects.map((p, i) => (
+                      <>
+                        {i > 0 && ', '}
+                        <a href={`/work/${p.data.slug}/`}>{p.data.title}</a>
+                      </>
+                    ))}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Slot
+              title="Skills and tools"
+              text="Generated from project files: each tool listed with the case studies where I used it."
+              source="content/projects/*/index.md → tools"
+            />
+          )}
+        </Container>
+      </section>
+    )
+  }
+
+  {
+    P && (
+      <section class="block" aria-labelledby="beyond">
+        <Container>
+          <SectionHeading id="beyond" eyebrow="Outside of work" title="Beyond the resume" />
+          <Slot
+            title="Interests"
+            text="A short, personal note: interests, activities, or what I do outside class and work."
+            source="src/pages/about.astro"
+          />
+        </Container>
+      </section>
+    )
+  }
+
+  <ContactBand />
 </BaseLayout>
 
 <style>
-  .page-header {
-    padding-block: var(--space-8) var(--space-6);
+  .intro {
+    padding-block: clamp(3rem, 2rem + 4vw, 5.5rem) var(--space-6);
   }
-  .page-header h1 {
+  .intro :global(.intro__inner) {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+  }
+  @media (min-width: 48rem) {
+    .intro :global(.intro__inner) {
+      grid-template-columns: minmax(0, 1fr) clamp(15rem, 28vw, 22rem);
+      gap: var(--space-8);
+    }
+  }
+  .intro__text {
+    display: grid;
+    gap: var(--space-5);
+  }
+  .intro__title {
     font-size: var(--text-3xl);
   }
-  .prose {
-    font-size: var(--text-lg);
-  }
-  .resume {
-    margin-top: var(--space-6);
-  }
-  .contact {
-    margin-top: var(--space-7);
-  }
-  .contact h2 {
+  .intro__lede {
+    max-width: var(--width-prose);
+    color: var(--color-text-muted);
     font-size: var(--text-xl);
+    line-height: var(--leading-snug);
   }
-  .contact ul {
-    margin-top: var(--space-3);
+  .intro__photo {
+    width: min(60%, 16rem);
+    order: -1;
+  }
+  @media (min-width: 48rem) {
+    .intro__photo {
+      width: 100%;
+      order: 0;
+    }
+  }
+  .intro__photo :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 35%;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+  }
+  .block {
+    padding-block: calc(var(--section-gap) / 2);
+    border-top: 1px solid var(--color-border);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: var(--space-4);
+  }
+  .grid--wide {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    margin-top: var(--space-4);
+  }
+  .panel {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .panel__label {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+  .panel__value {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+  }
+  .timeline {
+    position: relative;
+    display: grid;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0 0 0 var(--space-6);
+    list-style: none;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: var(--space-2);
+    bottom: var(--space-2);
+    left: 0.4rem;
+    border-left: 1.5px dashed var(--color-border-strong);
+  }
+  .timeline__item {
+    position: relative;
+  }
+  .timeline__dot {
+    position: absolute;
+    top: 1.6rem;
+    left: calc(-1 * var(--space-6) + 0.1rem);
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 2px solid var(--color-accent);
+    border-radius: 50%;
+    background: var(--color-bg);
+  }
+  .tools {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+    gap: var(--space-3);
+    margin: 0;
     padding: 0;
     list-style: none;
   }
-  .contact li + li {
-    margin-top: var(--space-2);
+  .tools li {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .tools__name {
+    font-weight: var(--weight-semibold);
+  }
+  .tools__where {
+    font-size: var(--text-sm);
   }
 </style>

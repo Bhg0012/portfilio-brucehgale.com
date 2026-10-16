@@ -1,131 +1,447 @@
 ---
 /*
- * Homepage. Messaging is deliberately minimal until real projects arrive.
- * Planned sections (see docs/site-architecture.md): introduction and the
- * problems Bruce can help solve, selected work, capabilities supported by
- * that work, relevant background, and a clear next action.
+ * Homepage, ordered for a recruiter's first look and a hiring manager's
+ * second: who Bruce is (hero), proof (selected work, what it demonstrates,
+ * tools), background, then one clear next step (contact).
+ *
+ * Every section shows real content when it exists. In placeholder mode
+ * (site.placeholders), dashed slots mark what is still to come.
  */
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
 import Button from '../components/Button.astro';
 import ProjectGrid from '../components/ProjectGrid.astro';
-import { capabilitiesFrom, getFeaturedProjects, getProjects } from '../lib/projects';
+import SectionHeading from '../components/SectionHeading.astro';
+import Slot from '../components/Slot.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { capabilityEvidence, getFeaturedProjects, getProjects, toolsFrom } from '../lib/projects';
+import { profilePhoto } from '../lib/profile';
 import { site, hasContact } from '../site.config';
 
+const P = site.placeholders;
 const projects = await getProjects();
 const featured = await getFeaturedProjects();
-const selected = featured.length > 0 ? featured : projects.slice(0, 3);
-const capabilities = capabilitiesFrom(projects);
+const selected = (featured.length > 0 ? featured : projects).slice(0, 3);
+const fillerCount = P ? Math.max(0, 3 - selected.length) : 0;
+const capabilities = capabilityEvidence(projects).filter((c) => P || c.projects.length > 0);
+const tools = toolsFrom(projects);
+const showWork = projects.length > 0 || P;
+const showContactPage = hasContact || P;
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  url: site.url,
+  affiliation: { '@type': 'CollegeOrUniversity', name: site.profile.school },
+  sameAs: [site.contact.linkedin, site.contact.github].filter(Boolean),
+};
 ---
 
 <BaseLayout type="profile">
-  <section class="intro">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(personLd)} />
+
+  <!-- Hero: who Bruce is, in one screen -->
+  <section class="hero" aria-labelledby="hero-title">
+    <Container class="hero__inner">
+      <div class="hero__text">
+        <p class="eyebrow">Portfolio</p>
+        <h1 id="hero-title" class="hero__name">{site.name}</h1>
+        <p class="hero__lede">
+          {site.profile.program} student at {site.profile.school} with a minor in {site.profile.minor}.
+        </p>
+        {
+          P && (
+            <Slot
+              title="Positioning statement"
+              text="One or two sentences on the business problems I help solve, written from my strongest projects once they are in."
+              source="src/pages/index.astro"
+            />
+          )
+        }
+        <div class="hero__focus">
+          <p class="hero__focus-label">Focus areas</p>
+          <ul class="chips" aria-label="Focus areas">
+            {site.profile.focusAreas.map((area) => <li>{area}</li>)}
+          </ul>
+        </div>
+        <div class="hero__actions">
+          {showWork && <Button href="/work/" arrow>View my work</Button>}
+          {showContactPage && <Button href="/contact/" variant="secondary">Get in touch</Button>}
+          {!showWork && !showContactPage && <Button href="/about/" arrow>About me</Button>}
+          {
+            site.resume && (
+              <Button href={site.resume} variant="secondary">
+                Resume (PDF)
+              </Button>
+            )
+          }
+        </div>
+        {
+          P && !site.resume && (
+            <Slot
+              variant="inline"
+              title="Resume download button"
+              text="Appears here and in the header once an approved PDF is added."
+              source="public/downloads/ + resume in src/site.config.ts"
+            />
+          )
+        }
+      </div>
+      <figure class="hero__photo">
+        <Image
+          src={profilePhoto.src}
+          alt={profilePhoto.alt}
+          widths={[360, 540, 720, 960]}
+          sizes="(min-width: 82rem) 26rem, (min-width: 48rem) 32vw, 18rem"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+    </Container>
+  </section>
+
+  <!-- Proof: selected work -->
+  {
+    (selected.length > 0 || fillerCount > 0) && (
+      <section class="block" aria-labelledby="selected-work">
+        <Container>
+          <SectionHeading
+            id="selected-work"
+            eyebrow="Selected work"
+            title="Projects that show how I work"
+            intro="Each case study covers the problem, my role, the approach, and the result."
+            action={showWork ? { href: '/work/', label: 'All work' } : undefined}
+          />
+          <ProjectGrid projects={selected} placeholders={fillerCount} />
+        </Container>
+      </section>
+    )
+  }
+
+  <!-- Proof: capabilities, each tied to the projects that demonstrate it -->
+  {
+    capabilities.length > 0 && (
+      <section class="block" aria-labelledby="capabilities">
+        <Container class="split">
+          <div class="split__aside">
+            <SectionHeading
+              id="capabilities"
+              eyebrow="What the work demonstrates"
+              title="Skills, backed by projects"
+              intro="Every skill listed here links to the work that shows it."
+            />
+          </div>
+          <ol class="capabilities" role="list">
+            {capabilities.map((c, i) => (
+              <li class="capability">
+                <span class="capability__num" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h3 class="capability__title">{c.label}</h3>
+                  <p class="capability__text">{c.description}</p>
+                  {c.projects.length > 0 ? (
+                    <p class="capability__evidence">
+                      <span class="visually-hidden">Shown in: </span>
+                      {c.projects.map((p, j) => (
+                        <>
+                          {j > 0 && ', '}
+                          <a href={`/work/${p.data.slug}/`}>{p.data.title}</a>
+                        </>
+                      ))}
+                    </p>
+                  ) : (
+                    <p class="capability__pending">Supporting projects will be linked here.</p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
+    )
+  }
+
+  <!-- Proof: tools, generated from project files -->
+  {
+    (tools.length > 0 || P) && (
+      <section class="block" aria-labelledby="toolkit">
+        <Container>
+          <SectionHeading
+            id="toolkit"
+            eyebrow="Toolkit"
+            title="Tools behind the work"
+            intro="The tools I used in these projects, and how often each one shows up."
+          />
+          {tools.length > 0 ? (
+            <ul class="tools" role="list">
+              {tools.map((tool) => (
+                <li class="tool">
+                  <span class="tool__name">{tool.name}</span>
+                  <span class="tool__count">
+                    {tool.projects.length} {tool.projects.length === 1 ? 'project' : 'projects'}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Slot
+              title="Tools and technologies"
+              text="Built automatically from the tools listed in each project, so every tool shown is backed by real work: analysis, visualization, databases, integrations, hosting, and AI."
+              source="content/projects/*/index.md → tools"
+            />
+          )}
+        </Container>
+      </section>
+    )
+  }
+
+  <!-- Background -->
+  <section class="block" aria-labelledby="background">
     <Container>
-      <h1 class="intro__name">{site.name}</h1>
-      <p class="intro__lede">
-        {site.profile.program} student at {site.profile.school}, minor in {site.profile.minor}.
-      </p>
-      <div class="intro__actions">
-        {projects.length > 0 && <Button href="/work/">View my work</Button>}
-        <Button href="/about/" variant={projects.length > 0 ? 'secondary' : 'primary'}>About me</Button>
-        {hasContact && <Button href="/about/#contact" variant="secondary">Get in touch</Button>}
+      <SectionHeading id="background" eyebrow="Background" title="Education and experience" action={{ href: '/about/', label: 'More about me' }} />
+      <div class="background">
+        <article class="panel">
+          <p class="panel__label">Education</p>
+          <h3 class="panel__title">{site.profile.school}</h3>
+          <p>{site.profile.program}</p>
+          <p class="panel__muted">Minor in {site.profile.minor}</p>
+          {site.profile.graduation && <p class="panel__muted">Expected graduation: {site.profile.graduation}</p>}
+          {
+            P && !site.profile.graduation && (
+              <Slot variant="inline" title="Expected graduation date" source="src/site.config.ts → profile.graduation" />
+            )
+          }
+        </article>
+        {
+          P && (
+            <Slot
+              title="Experience"
+              text="Jobs, internships, and leadership roles: organization, role, dates, and what I was responsible for, linked to related projects."
+              source="catalog/experience/ → approved details"
+            />
+          )
+        }
       </div>
     </Container>
   </section>
 
-  {
-    selected.length > 0 && (
-      <section class="block" aria-labelledby="selected-work">
-        <Container>
-          <div class="block__header">
-            <h2 id="selected-work">Selected work</h2>
-            {projects.length > selected.length && <a href="/work/">All projects</a>}
-          </div>
-          <ProjectGrid projects={selected} />
-        </Container>
-      </section>
-    )
-  }
-
-  {
-    capabilities.length > 0 && (
-      <section class="block" aria-labelledby="capabilities">
-        <Container>
-          <div class="block__header">
-            <h2 id="capabilities">What the work shows</h2>
-          </div>
-          <dl class="capabilities">
-            {capabilities.map((c) => (
-              <div class="capabilities__item">
-                <dt>{c.label}</dt>
-                <dd>
-                  {c.projects.map((p, i) => (
-                    <>
-                      {i > 0 && ', '}
-                      <a href={`/work/${p.data.slug}/`}>{p.data.title}</a>
-                    </>
-                  ))}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Container>
-      </section>
-    )
-  }
+  <ContactBand />
 </BaseLayout>
 
 <style>
-  .intro {
-    padding-block: var(--space-9) var(--space-7);
+  /* Hero */
+  .hero {
+    padding-block: clamp(3rem, 2rem + 4vw, 6rem) var(--space-7);
   }
-  .intro__name {
-    font-size: var(--text-3xl);
+  .hero :global(.hero__inner) {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
   }
-  .intro__lede {
-    margin-top: var(--space-4);
-    max-width: var(--width-prose);
+  @media (min-width: 48rem) {
+    .hero :global(.hero__inner) {
+      grid-template-columns: minmax(0, 1fr) clamp(16rem, 32vw, 26rem);
+      gap: clamp(var(--space-6), 4vw, var(--space-8));
+    }
+  }
+  .hero__text {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-5);
+  }
+  .hero__name {
+    font-size: var(--text-display);
+    line-height: 1;
+  }
+  .hero__lede {
+    max-width: 34rem;
     color: var(--color-text-muted);
     font-size: var(--text-xl);
     line-height: var(--leading-snug);
   }
-  .intro__actions {
+  .hero__focus {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .hero__focus-label {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .chips li {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+  }
+  .hero__actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
-    margin-top: var(--space-6);
+    margin-top: var(--space-2);
   }
+  .hero__photo {
+    justify-self: center;
+    width: min(100%, 26rem);
+    order: -1;
+  }
+  @media (min-width: 48rem) {
+    .hero__photo {
+      order: 0;
+      justify-self: end;
+    }
+  }
+  .hero__photo :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 35%;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+  }
+  @media (max-width: 47.99rem) {
+    .hero__photo {
+      width: min(70%, 18rem);
+      justify-self: start;
+    }
+  }
+
+  /* Sections */
   .block {
-    padding-block: var(--space-7);
+    padding-block: calc(var(--section-gap) / 2);
   }
-  .block__header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-3);
-    margin-bottom: var(--space-5);
+  .block + .block {
+    border-top: 1px solid var(--color-border);
   }
-  .block__header h2 {
-    font-size: var(--text-2xl);
+
+  /* Capabilities */
+  .block :global(.split) {
+    display: grid;
+    gap: var(--space-6);
+  }
+  @media (min-width: 60rem) {
+    .block :global(.split) {
+      grid-template-columns: 20rem minmax(0, 1fr);
+      gap: var(--space-8);
+    }
+    .split__aside {
+      position: sticky;
+      top: calc(var(--header-height) + var(--space-6));
+      align-self: start;
+    }
   }
   .capabilities {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
-    gap: var(--space-4);
     margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-border);
   }
-  .capabilities__item {
-    padding: var(--space-5);
+  .capability {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: var(--space-3);
+    padding-block: var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .capability__num {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.2rem;
+  }
+  .capability__title {
+    font-size: var(--text-lg);
+    letter-spacing: -0.01em;
+  }
+  .capability__text {
+    margin-top: var(--space-1);
+    color: var(--color-text-muted);
+  }
+  .capability__evidence {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+  }
+  .capability__pending {
+    display: inline-block;
+    margin-top: var(--space-3);
+    padding: var(--space-1) var(--space-3);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+  }
+
+  /* Tools */
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .tool {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+  }
+  .tool__name {
+    font-weight: var(--weight-semibold);
+  }
+  .tool__count {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+  }
+
+  /* Background */
+  .background {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    gap: var(--space-5);
+  }
+  .panel {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    padding: var(--space-6);
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
   }
-  .capabilities__item dt {
+  .panel__label {
+    color: var(--color-accent);
+    font-size: var(--text-xs);
     font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
   }
-  .capabilities__item dd {
-    margin: var(--space-2) 0 0;
-    font-size: var(--text-sm);
+  .panel__title {
+    font-size: var(--text-xl);
+  }
+  .panel__muted {
+    color: var(--color-text-muted);
+  }
+  .panel :global(.slot) {
+    margin-top: var(--space-3);
   }
 </style>

@@ -1,0 +1,102 @@
+---
+/**
+ * A clearly marked placeholder showing where future content will go.
+ * Only render it when `site.placeholders` is true and the real content is
+ * missing; real content always replaces it.
+ */
+interface Props {
+  /** What will go here, e.g. "Positioning statement". */
+  title: string;
+  /** What it will contain or how it will work. */
+  text?: string;
+  /** Where the content will come from, e.g. "src/site.config.ts". */
+  source?: string;
+  /** "block" for text areas, "media" for image areas, "inline" for small items. */
+  variant?: 'block' | 'media' | 'inline';
+  /** Aspect ratio for media slots, e.g. "16 / 10". */
+  ratio?: string;
+  class?: string;
+}
+const { title, text, source, variant = 'block', ratio = '16 / 10', class: className } = Astro.props;
+---
+
+<div
+  class:list={['slot', `slot--${variant}`, className]}
+  style={variant === 'media' ? `aspect-ratio: ${ratio}` : undefined}
+  role="note"
+  aria-label={`Placeholder: ${title}`}
+>
+  <span class="slot__tag">
+    <svg aria-hidden="true" width="12" height="12" viewBox="0 0 16 16" fill="none">
+      <rect x="1.5" y="1.5" width="13" height="13" rx="3" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2.5"></rect>
+    </svg>
+    Coming soon
+  </span>
+  <p class="slot__title">{title}</p>
+  {text && <p class="slot__text">{text}</p>}
+  {source && <p class="slot__source">{source}</p>}
+</div>
+
+<style>
+  .slot {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border: 1.5px dashed var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent 0 10px,
+      rgb(201 193 179 / 0.12) 10px 11px
+    );
+    color: var(--color-text-muted);
+  }
+  .slot--media {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    /* min-width: 0 stops min-height from widening the box through aspect-ratio. */
+    min-width: 0;
+    min-height: 10rem;
+  }
+  .slot--inline {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    gap: var(--space-1);
+  }
+  .slot__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.125rem var(--space-2);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-muted);
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .slot--inline .slot__tag {
+    display: none;
+  }
+  .slot__title {
+    color: var(--color-text);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+  }
+  .slot__text {
+    max-width: 38rem;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+  }
+  .slot__source {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    overflow-wrap: anywhere;
+  }
+</style>

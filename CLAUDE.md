@@ -16,7 +16,7 @@ Public writing: straightforward, confident, plain English, with technical depth 
 
 ## Current phase
 
-**Foundation complete; waiting for source materials.** (Temporary: once Bruce supplies materials and asks for building, proceed with intake, content writing, homepage messaging, and design refinement. Do not treat this section as a reason to hold back.)
+**Placeholder site built; waiting for source materials.** The site runs in placeholder mode (`placeholders: true` in `src/site.config.ts`): dashed "Coming soon" slots show where every missing piece goes, and all pages are `noindex`. (Temporary: once Bruce supplies materials and asks for building, proceed with intake, content writing, homepage messaging, and design refinement. Do not treat this section as a reason to hold back.)
 
 Next: process uploaded dossiers per `docs/intake-workflow.md`, draft project content, then write homepage and About copy from approved material.
 
@@ -47,7 +47,9 @@ Next: process uploaded dossiers per `docs/intake-workflow.md`, draft project con
 | `content/projects/<slug>/images/`  | Approved project images (optimized at build)                   | Tracked |
 | `public/downloads/`                | Intentionally public files (resume, approved reports)          | Tracked |
 | `src/content.config.ts`            | Project schema: the single source of truth for fields          | Tracked |
-| `src/site.config.ts`               | Name, verified profile facts, contact, resume path             | Tracked |
+| `src/site.config.ts`               | Name, verified profile facts, focus areas, contact, resume path, placeholder switch | Tracked |
+| `src/assets/profile/`              | Approved portrait (EXIF stripped), used via `src/lib/profile.ts` | Tracked |
+| `public/social-card.jpg`           | Default link-preview image from `scripts/make-social-card.py`  | Tracked |
 | `src/pages/`, `src/components/`, `src/layouts/`, `src/lib/` | Routes, UI components, helpers         | Tracked |
 | `src/styles/tokens.css`            | Design tokens                                                  | Tracked |
 | `docs/`                            | Content model, intake workflow, architecture, project template | Tracked |
@@ -60,11 +62,22 @@ Raw intake material never goes into `content/` or `public/` without review. Priv
 
 - Project slug = folder name = URL (`/work/<slug>/`); permanent once published. The build fails on a mismatch.
 - Only `published` projects build in production. `npm run dev` shows drafts with a banner.
-- Navigation and buttons render only when their destination exists (Work needs a published project; Contact and Resume need values in `site.config.ts`).
+- Navigation and buttons render only when their destination exists (Work needs a published project; Contact and Resume need values in `site.config.ts`). Placeholder mode also shows Work and Contact so their layouts can be reviewed.
+- Placeholders (`Slot`) describe what will go somewhere; they never contain invented facts. Render a slot only when `site.placeholders` is true and the real content is missing.
+- Strip metadata (EXIF, GPS, document properties) from any image or file before committing it. If profile facts or the portrait change, re-run `python3 scripts/make-social-card.py`.
 - Use design tokens, not raw colors or sizes. Add components only when real content needs them.
 - Keep dependencies minimal. Current runtime deps: `astro`, `@astrojs/sitemap`.
 - Do not use em dashes in site copy or docs (Bruce's preference); use a single hyphen, a colon, or rephrase.
 - Use they/them or "Bruce" in docs; do not assume pronouns.
+
+## Launch checklist
+
+1. At least three published, Bruce-approved projects
+2. Homepage positioning statement and About story approved by Bruce
+3. Contact details and resume PDF added in `src/site.config.ts` and `public/downloads/`
+4. GitHub repository private (required by the catalog)
+5. `placeholders: false`, then `npm run validate`
+6. Connect Cloudflare (build `npm run build`, output `dist`, Node 22)
 
 ## Commands
 
@@ -74,7 +87,8 @@ npm run dev          # local dev server at http://localhost:4321 (shows drafts)
 npm run check        # type and schema check (astro check)
 npm run build        # production build to dist/ (published projects only)
 npm run verify       # post-build checks: internal links, no drafts, no intake leaks
-npm run validate     # check + build + verify; run before every commit
+npm run contrast     # WCAG contrast check of design tokens
+npm run validate     # contrast + check + build + verify; run before every commit
 npm run preview      # serve the production build locally
 ```
 

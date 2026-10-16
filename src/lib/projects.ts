@@ -44,23 +44,70 @@ export async function getFeaturedProjects(): Promise<Project[]> {
   return (await getProjects()).filter((p) => p.data.featured);
 }
 
-export const capabilityLabels: Record<(typeof CAPABILITIES)[number], string> = {
-  'problem-framing': 'Framing business problems',
-  'analysis-and-recommendations': 'Analysis and recommendations',
-  'building-solutions': 'Building practical solutions',
-  'applied-ai': 'Applying AI thoughtfully',
-  'tools-and-infrastructure': 'Tools, integrations, and infrastructure',
-  'troubleshooting-and-iteration': 'Troubleshooting and iteration',
-  'business-communication': 'Explaining technical work clearly',
+/**
+ * What each capability means, in Bruce's own framing of what an employer
+ * should take away. Shown only alongside projects that demonstrate it
+ * (or as a placeholder in pre-launch preview mode).
+ */
+export const capabilityInfo: Record<(typeof CAPABILITIES)[number], { label: string; description: string }> = {
+  'problem-framing': {
+    label: 'Framing business problems',
+    description: 'Identifying and understanding a business problem.',
+  },
+  'analysis-and-recommendations': {
+    label: 'Analysis and recommendations',
+    description: 'Analyzing information and making useful recommendations.',
+  },
+  'building-solutions': {
+    label: 'Building practical solutions',
+    description: 'Turning analysis and ideas into working tools and deliverables.',
+  },
+  'applied-ai': {
+    label: 'Applying AI thoughtfully',
+    description: 'Using AI thoughtfully and effectively.',
+  },
+  'tools-and-infrastructure': {
+    label: 'Tools, integrations, and infrastructure',
+    description: 'Understanding the tools, integrations, and infrastructure behind the work.',
+  },
+  'troubleshooting-and-iteration': {
+    label: 'Troubleshooting and iteration',
+    description: 'Making decisions, troubleshooting problems, and improving an implementation.',
+  },
+  'business-communication': {
+    label: 'Explaining technical work clearly',
+    description: 'Explaining technical work clearly to a business audience.',
+  },
 };
 
-/** Capabilities that at least one shown project demonstrates, with those projects. */
-export function capabilitiesFrom(projects: Project[]) {
+/** Every capability with the shown projects that demonstrate it (possibly none). */
+export function capabilityEvidence(projects: Project[]) {
   return CAPABILITIES.map((id) => ({
     id,
-    label: capabilityLabels[id],
+    ...capabilityInfo[id],
     projects: projects.filter((p) => p.data.capabilities.includes(id)),
-  })).filter((c) => c.projects.length > 0);
+  }));
+}
+
+/** Capabilities that at least one shown project demonstrates. */
+export function capabilitiesFrom(projects: Project[]) {
+  return capabilityEvidence(projects).filter((c) => c.projects.length > 0);
+}
+
+/** Unique tools across projects, each with the projects that used it, ordered by use. */
+export function toolsFrom(projects: Project[]) {
+  const tools = new Map<string, { name: string; projects: Project[] }>();
+  for (const project of projects) {
+    for (const tool of project.data.tools) {
+      const key = tool.name.toLowerCase();
+      const entry = tools.get(key) ?? { name: tool.name, projects: [] };
+      if (!entry.projects.includes(project)) entry.projects.push(project);
+      tools.set(key, entry);
+    }
+  }
+  return [...tools.values()].sort(
+    (a, b) => b.projects.length - a.projects.length || a.name.localeCompare(b.name),
+  );
 }
 
 export const contextLabels: Record<Project['data']['context']['type'], string> = {

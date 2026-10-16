@@ -79,6 +79,15 @@ for (const file of htmlFiles) {
   }
 }
 
+// Placeholder mode is fine for previews but should be off at launch.
+const home = join(DIST, 'index.html');
+if (existsSync(home) && readFileSync(home, 'utf8').includes('data-placeholders="on"')) {
+  console.warn(
+    'verify-build: note: placeholder mode is ON (site.placeholders in src/site.config.ts). ' +
+      'Pages show "coming soon" slots and are marked noindex. Turn it off before launch.',
+  );
+}
+
 if (errors.length) {
   console.error(`verify-build: ${errors.length} problem(s)\n${errors.map((e) => `  - ${e}`).join('\n')}`);
   process.exit(1);

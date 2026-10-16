@@ -3,37 +3,47 @@ import type { HTMLAttributes } from 'astro/types';
 
 interface Props extends HTMLAttributes<'a'> {
   href: string;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'on-ink';
+  /** Show a trailing arrow. */
+  arrow?: boolean;
 }
-const { href, variant = 'primary', class: className, ...rest } = Astro.props;
+const { href, variant = 'primary', arrow = false, class: className, ...rest } = Astro.props;
 ---
 
-<a href={href} class:list={['button', `button--${variant}`, className]} {...rest}><slot /></a>
+<a href={href} class:list={['button', `button--${variant}`, className]} {...rest}>
+  <slot />
+  {arrow && <span class="button__arrow" aria-hidden="true">→</span>}
+</a>
 
 <style>
   .button {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: var(--space-2);
-    min-height: 2.75rem;
+    min-height: 2.875rem;
     padding: var(--space-2) var(--space-5);
     border: 1px solid transparent;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-pill);
     font-size: var(--text-sm);
     font-weight: var(--weight-semibold);
+    line-height: 1.2;
     text-decoration: none;
     transition:
       background-color var(--duration-fast) var(--ease),
       border-color var(--duration-fast) var(--ease),
-      color var(--duration-fast) var(--ease);
+      color var(--duration-fast) var(--ease),
+      box-shadow var(--duration-fast) var(--ease);
   }
   .button--primary {
     background: var(--color-accent);
     color: var(--color-on-accent);
+    box-shadow: var(--shadow-sm);
   }
   .button--primary:hover {
     background: var(--color-accent-hover);
     color: var(--color-on-accent);
+    box-shadow: var(--shadow-md);
   }
   .button--secondary {
     background: var(--color-surface);
@@ -43,5 +53,22 @@ const { href, variant = 'primary', class: className, ...rest } = Astro.props;
   .button--secondary:hover {
     border-color: var(--color-accent);
     color: var(--color-accent);
+  }
+  .button--on-ink {
+    background: var(--color-on-ink);
+    color: var(--color-ink);
+  }
+  .button--on-ink:hover {
+    background: #ffffff;
+    color: var(--color-ink);
+  }
+  .button--on-ink:focus-visible {
+    outline-color: var(--color-on-ink);
+  }
+  .button__arrow {
+    transition: transform var(--duration-fast) var(--ease);
+  }
+  .button:hover .button__arrow {
+    transform: translateX(3px);
   }
 </style>

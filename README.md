@@ -15,6 +15,8 @@ npm run dev        # http://localhost:4321
 
 The dev server also shows draft projects, marked with a "Preview only" banner.
 
+The site currently runs in **placeholder mode**: dashed "Coming soon" boxes show where each missing piece of content will go. See [docs/site-architecture.md](docs/site-architecture.md#placeholder-mode).
+
 ## Validate and build
 
 ```sh
@@ -67,6 +69,8 @@ Field-by-field guidance: [docs/content-model.md](docs/content-model.md).
 | Downloadable project files            | `public/downloads/<slug>/`            | Served exactly as-is                   |
 | Resume                                | `public/downloads/`                   | Then set `resume` in `src/site.config.ts` |
 | Favicon                               | `public/favicon.svg`                  |                                        |
+| Portrait                              | `src/assets/profile/`                 | Optimized at build; EXIF stripped      |
+| Link-preview card                     | `public/social-card.jpg`              | Regenerate with `python3 scripts/make-social-card.py` |
 
 Everything in `public/` is reachable by URL, linked or not. Only place files there that are approved for anyone to see.
 
@@ -80,8 +84,8 @@ Static output, no server or environment variables. On Cloudflare: build command 
 - [ ] Upload project dossiers and screenshots to `intake/inbox/`
 - [ ] Process materials into draft project pages
 - [ ] Choose featured projects and their order
+- [ ] Turn off placeholder mode (`placeholders: false` in `src/site.config.ts`) before launch
 - [ ] Write homepage introduction and About copy from approved material
 - [ ] Add verified contact links and an approved resume PDF
 - [ ] Refine typography and layout against real project imagery
-- [ ] Add a default social share image
 - [ ] Connect the repository to Cloudflare and deploy

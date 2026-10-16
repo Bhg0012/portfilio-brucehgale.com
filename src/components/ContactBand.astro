@@ -1,0 +1,90 @@
+---
+/** Closing call to action. Renders only when there is a way to get in touch. */
+import Container from './Container.astro';
+import Button from './Button.astro';
+import { site, hasContact } from '../site.config';
+
+const { email, linkedin } = site.contact;
+const show = hasContact || site.placeholders;
+// Lowercase only the first letter so acronyms like "AI" stay intact.
+const focus = site.profile.focusAreas.map((a) => a.charAt(0).toLowerCase() + a.slice(1));
+const focusText = `${focus.slice(0, -1).join(', ')}, and ${focus.at(-1)}`;
+---
+
+{
+  show && (
+    <section class="band" aria-labelledby="contact-band">
+      <Container>
+        <div class="band__inner">
+          <div class="band__text">
+            <p class="band__eyebrow">Next step</p>
+            <h2 id="contact-band" class="band__title">
+              Let's talk
+            </h2>
+            <p class="band__lede">I'm looking for opportunities in {focusText}.</p>
+          </div>
+          <div class="band__actions">
+            {email && (
+              <Button href={`mailto:${email}`} variant="on-ink">
+                Email me
+              </Button>
+            )}
+            {linkedin && (
+              <Button href={linkedin} variant="on-ink" rel="me">
+                LinkedIn
+              </Button>
+            )}
+            {!email && !linkedin && (
+              <Button href="/contact/" variant="on-ink" arrow>
+                Contact
+              </Button>
+            )}
+          </div>
+        </div>
+      </Container>
+    </section>
+  )
+}
+
+<style>
+  .band {
+    margin-top: calc(var(--section-gap) / 2);
+  }
+  .band__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding: clamp(2rem, 1.5rem + 3vw, 4rem);
+    border-radius: var(--radius-xl);
+    background: var(--color-ink);
+    color: var(--color-on-ink);
+  }
+  .band__text {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 36rem;
+  }
+  .band__eyebrow {
+    color: var(--color-on-ink-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+  .band__title {
+    font-size: var(--text-3xl);
+    letter-spacing: var(--tracking-display);
+  }
+  .band__lede {
+    color: var(--color-on-ink-muted);
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+  }
+  .band__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

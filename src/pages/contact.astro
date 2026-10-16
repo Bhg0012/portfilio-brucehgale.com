@@ -1,0 +1,155 @@
+---
+/*
+ * Contact page. Shows only verified contact methods from src/site.config.ts.
+ * In placeholder mode, dashed slots mark where each method will go.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Button from '../components/Button.astro';
+import Slot from '../components/Slot.astro';
+import { site, hasContact } from '../site.config';
+
+const P = site.placeholders;
+const { email, linkedin, github } = site.contact;
+
+const methods = [
+  email && { label: 'Email', value: email, href: `mailto:${email}`, rel: undefined },
+  linkedin && { label: 'LinkedIn', value: linkedin.replace(/^https?:\/\/(www\.)?/, ''), href: linkedin, rel: 'me' },
+  github && { label: 'GitHub', value: github.replace(/^https?:\/\/(www\.)?/, ''), href: github, rel: 'me' },
+].filter((m): m is { label: string; value: string; href: string; rel: string | undefined } => Boolean(m));
+
+const missing = [
+  !email && { title: 'Email', source: 'src/site.config.ts → contact.email' },
+  !linkedin && { title: 'LinkedIn', source: 'src/site.config.ts → contact.linkedin' },
+  !github && { title: 'GitHub', source: 'src/site.config.ts → contact.github' },
+].filter((m): m is { title: string; source: string } => Boolean(m));
+---
+
+<BaseLayout title="Contact" description={`How to reach ${site.name}.`} noindex={!hasContact}>
+  <Container width="prose">
+    <header class="header">
+      <p class="eyebrow">Contact</p>
+      <h1 class="title">Get in touch</h1>
+      <p class="lede">
+        {
+          hasContact
+            ? 'For roles, projects, or questions about my work, reach me here.'
+            : 'Contact details are on the way.'
+        }
+      </p>
+    </header>
+
+    {
+      (methods.length > 0 || P) && (
+        <ul class="methods" role="list">
+          {methods.map((m) => (
+            <li>
+              <a class="method" href={m.href} rel={m.rel}>
+                <span class="method__label">{m.label}</span>
+                <span class="method__value">{m.value}</span>
+                <span class="method__arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+          {P &&
+            missing.map((m) => (
+              <li>
+                <Slot variant="inline" title={m.title} source={m.source} />
+              </li>
+            ))}
+        </ul>
+      )
+    }
+
+    {
+      site.resume ? (
+        <div class="resume">
+          <Button href={site.resume} arrow>
+            Download my resume (PDF)
+          </Button>
+        </div>
+      ) : (
+        P && (
+          <div class="resume">
+            <Slot
+              title="Resume (PDF)"
+              text="A download button for an approved, metadata-cleaned resume."
+              source="public/downloads/ + resume in src/site.config.ts"
+            />
+          </div>
+        )
+      )
+    }
+
+    {
+      P && !site.profile.location && (
+        <div class="resume">
+          <Slot
+            variant="inline"
+            title="Location and availability"
+            text="Where I'm based and when I'm available (internship or full-time), once confirmed."
+            source="src/site.config.ts → profile"
+          />
+        </div>
+      )
+    }
+  </Container>
+</BaseLayout>
+
+<style>
+  .header {
+    display: grid;
+    gap: var(--space-4);
+    padding-block: clamp(3rem, 2rem + 4vw, 5.5rem) var(--space-7);
+  }
+  .title {
+    font-size: var(--text-3xl);
+  }
+  .lede {
+    color: var(--color-text-muted);
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+  }
+  .methods {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .method {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text);
+    text-decoration: none;
+    transition:
+      border-color var(--duration-fast) var(--ease),
+      box-shadow var(--duration-fast) var(--ease);
+  }
+  .method:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-md);
+    color: var(--color-text);
+  }
+  .method__label {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+  }
+  .method__value {
+    overflow-wrap: anywhere;
+    font-weight: var(--weight-medium);
+  }
+  .method__arrow {
+    color: var(--color-accent);
+  }
+  .resume {
+    margin-top: var(--space-6);
+  }
+</style>

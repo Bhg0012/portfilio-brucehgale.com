@@ -2,33 +2,43 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Container from '../../components/Container.astro';
 import ProjectGrid from '../../components/ProjectGrid.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
 import { getProjects } from '../../lib/projects';
 import { site } from '../../site.config';
 
 const projects = await getProjects();
+// In placeholder mode, show up to six cards so the page reads as it will at launch.
+const fillerCount = site.placeholders ? Math.max(0, 6 - projects.length) : 0;
 ---
 
-<BaseLayout title="Work" description={`Projects by ${site.name}.`} noindex={projects.length === 0}>
+<BaseLayout
+  title="Work"
+  description={`Case studies by ${site.name}: the problem, the role, the approach, and the result.`}
+  noindex={projects.length === 0}
+>
   <Container>
-    <header class="page-header">
-      <h1>Work</h1>
-    </header>
+    <div class="header">
+      <SectionHeading
+        id="work-title"
+        level="h1"
+        eyebrow="Work"
+        title="Case studies"
+        intro="Projects from work, school, and my own initiatives. Each one covers the problem, my role, how I approached it, and what came of it."
+      />
+    </div>
     {
-      projects.length > 0 ? (
-        <ProjectGrid projects={projects} headingLevel="h2" />
+      projects.length > 0 || fillerCount > 0 ? (
+        <ProjectGrid projects={projects} placeholders={fillerCount} headingLevel="h2" />
       ) : (
-        <p class="empty">Project case studies are being prepared and will appear here.</p>
+        <p class="empty">Case studies are being prepared and will appear here.</p>
       )
     }
   </Container>
 </BaseLayout>
 
 <style>
-  .page-header {
-    padding-block: var(--space-8) var(--space-6);
-  }
-  .page-header h1 {
-    font-size: var(--text-3xl);
+  .header {
+    padding-top: clamp(3rem, 2rem + 4vw, 5.5rem);
   }
   .empty {
     padding: var(--space-6);

@@ -4,9 +4,12 @@ import type { Project } from '../lib/projects';
 
 interface Props {
   projects: Project[];
+  /** Placeholder cards appended after the real ones (placeholder mode only). */
+  placeholders?: number;
   headingLevel?: 'h2' | 'h3';
 }
-const { projects, headingLevel } = Astro.props;
+const { projects, placeholders = 0, headingLevel } = Astro.props;
+const fillers = Array.from({ length: placeholders }, (_, i) => projects.length + i + 1);
 ---
 
 <ul class="grid" role="list">
@@ -17,21 +20,22 @@ const { projects, headingLevel } = Astro.props;
       </li>
     ))
   }
+  {
+    fillers.map((n) => (
+      <li>
+        <ProjectCard index={n} headingLevel={headingLevel} />
+      </li>
+    ))
+  }
 </ul>
 
 <style>
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
     gap: var(--space-5);
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-  .grid > li {
-    display: flex;
-  }
-  .grid > li > :global(*) {
-    flex: 1;
   }
 </style>
