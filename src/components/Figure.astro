@@ -29,8 +29,17 @@ const widths = [480, 800, 1200, 1600].filter((w) => w < src.width).concat(src.wi
 </figure>
 
 <style>
+  .figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .figure__image {
-    width: 100%;
+    /* Natural size up to the column width; tall images are capped so they fit on screen. */
+    width: auto;
+    max-width: 100%;
+    max-height: min(85vh, 56rem);
+    margin-inline: auto;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     background: var(--color-surface-muted);
@@ -40,5 +49,6 @@ const widths = [480, 800, 1200, 1600].filter((w) => w < src.width).concat(src.wi
     max-width: var(--width-prose);
     color: var(--color-text-muted);
     font-size: var(--text-sm);
+    text-align: center;
   }
 </style>
