@@ -4,6 +4,7 @@
  * 1. Every internal link and asset reference resolves to a built file.
  * 2. No unpublished project (draft or review) was built.
  * 3. Nothing from intake/ or catalog/ leaked into the output.
+ * Also: every link to another website opens in a new tab.
  *
  * Run after `npm run build` (or use `npm run validate`, which does both).
  */
@@ -51,6 +52,18 @@ for (const file of htmlFiles) {
     for (const value of values) {
       if (!value.startsWith('/') || value.startsWith('//')) continue;
       if (!resolves(value)) errors.push(`${relative(DIST, file)}: broken internal reference ${value}`);
+    }
+  }
+}
+
+// 1b. Links to other websites open in a new tab (see src/integrations/external-links.mjs).
+for (const file of htmlFiles) {
+  const html = readFileSync(file, 'utf8');
+  for (const tag of html.match(/<a\b[^>]*>/gi) ?? []) {
+    const href = tag.match(/\shref="([^"]*)"/i)?.[1] ?? '';
+    if (!/^https?:\/\//i.test(href) || /^https?:\/\/(www\.)?brucehgale\.com/i.test(href)) continue;
+    if (!/\starget="_blank"/i.test(tag) || !/\srel="[^"]*\bnoopener\b/i.test(tag)) {
+      errors.push(`${relative(DIST, file)}: external link does not open in a new tab: ${href}`);
     }
   }
 }
