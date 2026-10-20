@@ -32,8 +32,8 @@ Marketing site for AuburnSEO LLC: "Websites that win you more jobs. Custom websi
 
 ## Open questions
 
-- When was AuburnSEO LLC founded? (Needed for dates.)
-- Is Northridge Construction a real client or a sample design?
+- Founded May 2026 (answered in S010).
+- Northridge Construction is a sample mockup, not a client (answered in S010).
 - How many clients so far? Any results besides clicks (calls, leads, rankings) with evidence?
 - Confirm the tools: GoHighLevel for sites and CRM, Stripe, Meta ads, anything else.
 

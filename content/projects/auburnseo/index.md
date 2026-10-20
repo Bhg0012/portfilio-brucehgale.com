@@ -16,6 +16,8 @@ context:
   type: personal
   organization: AuburnSEO LLC
 
+dates:
+  start: '2026-05'
 status: ongoing
 
 role: Founder
@@ -62,8 +64,8 @@ cover:
 
 figures:
   - src: ./images/mobile-site-design.png
-    alt: A phone showing a mobile contractor website with a "Quality Work. Built to Last." headline, a Call Now button, and service icons
-    caption: The mobile-first contractor site design featured on the AuburnSEO homepage. Most homeowners find a contractor on their phone.
+    alt: A phone showing a sample mobile contractor website with a "Quality Work. Built to Last." headline, a Call Now button, and service icons
+    caption: A sample mobile-first contractor site design (not a client) from the AuburnSEO homepage, showing the kind of site I build.
 
 links:
   - kind: demo

@@ -28,6 +28,5 @@ Business street address and SMS number on auburnseo.com are not used on the port
 
 ## Open questions for Bruce
 
-- Founding date, number of clients, and the analytics source for the clicks figure.
-- Is the Northridge Construction mockup a real client?
+- Number of clients and the analytics source for the clicks figure. (Founded May 2026; Northridge is a sample mockup, per S010.)
 - Any client results you can share with permission (calls, leads, rankings)?

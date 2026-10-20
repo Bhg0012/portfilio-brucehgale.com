@@ -22,6 +22,8 @@ export interface SiteConfig {
     program: string;
     school: string;
     minor: string;
+    /** e.g. "Honors College", once confirmed. */
+    honors?: string;
     /** Areas Bruce is targeting, as Bruce described them. */
     focusAreas: string[];
     /** e.g. "May 2027". Unconfirmed until Bruce provides it. */
@@ -45,13 +47,14 @@ export const site: SiteConfig = {
   name: 'Bruce Gale',
   url: 'https://brucehgale.com',
   description:
-    'Portfolio of Bruce Gale, a Business Analytics student at Auburn University with a minor in Marketing.',
+    'Portfolio of Bruce Gale, a Business Analytics student in the Auburn University Honors College with a minor in Marketing.',
   locale: 'en_US',
   placeholders: true,
   profile: {
     program: 'Business Analytics',
     school: 'Auburn University',
     minor: 'Marketing',
+    honors: 'Honors College',
     focusAreas: ['Business analytics', 'Data', 'Marketing', 'Business operations', 'Applied AI'],
     graduation: undefined,
     location: undefined,

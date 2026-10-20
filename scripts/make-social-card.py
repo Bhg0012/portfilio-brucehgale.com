@@ -17,7 +17,8 @@ FONTS = os.environ.get("INTER_DIR", "/usr/share/fonts/opentype/inter")
 
 NAME = "Bruce Gale"
 LINE_1 = "Business Analytics"
-LINE_2 = "Auburn University  ·  Minor in Marketing"
+LINE_2 = "Auburn University Honors College"
+LINE_3 = "Minor in Marketing"
 DOMAIN = "brucehgale.com"
 
 BG = (247, 245, 240)
@@ -59,6 +60,7 @@ draw.text(((x + 28) * S, 124 * S), "BG", font=mono, fill=(255, 255, 255), anchor
 draw.text((x * S, 250 * S), NAME, font=font("InterDisplay-SemiBold.otf", 88), fill=TEXT, anchor="ls")
 draw.text((x * S, 318 * S), LINE_1, font=font("Inter-Medium.otf", 34), fill=TEXT, anchor="ls")
 draw.text((x * S, 368 * S), LINE_2, font=font("Inter-Regular.otf", 26), fill=MUTED, anchor="ls")
+draw.text((x * S, 406 * S), LINE_3, font=font("Inter-Regular.otf", 26), fill=MUTED, anchor="ls")
 
 # Divider and domain.
 draw.line((x * S, 470 * S, (x + 520) * S, 470 * S), fill=BORDER, width=2 * S)

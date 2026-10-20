@@ -3,6 +3,7 @@ organization: AuburnSEO LLC
 role: Founder
 type: founder
 location: Huntsville, AL
+start: '2026-05'
 current: true
 logo: ./logos/auburnseo.png
 url: https://auburnseo.com

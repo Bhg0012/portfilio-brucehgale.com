@@ -50,6 +50,6 @@ Skills: Customer Service
 
 ## Notes
 
-- Headline says "Honors". Not on the site yet: confirm whether Bruce is in the Auburn Honors College.
+- Headline says "Honors". Bruce confirmed he is in the Auburn University Honors College (S010); now on the site.
 - Four Padsnap skills and two Lowe's skills are hidden behind "+4" and "+2" in the screenshot.
 - Bullets were lightly edited for the site (tense, plain wording). The third Padsnap bullet was rewritten from a skill statement into the action it describes.

@@ -53,7 +53,8 @@ const personLd = {
         <p class="eyebrow">Portfolio</p>
         <h1 id="hero-title" class="hero__name">{site.name}</h1>
         <p class="hero__lede">
-          {site.profile.program} student at {site.profile.school} with a minor in {site.profile.minor}.
+          {site.profile.program} student {site.profile.honors ? `in the ${site.profile.school} ${site.profile.honors}` : `at ${site.profile.school}`}{' '}
+          with a minor in {site.profile.minor}.
         </p>
         {
           current.length > 0 && (
@@ -226,6 +227,7 @@ const personLd = {
           <h3 class="panel__title">{site.profile.school}</h3>
           <p>{site.profile.program}</p>
           <p class="panel__muted">Minor in {site.profile.minor}</p>
+          {site.profile.honors && <p class="panel__muted">{site.profile.honors}</p>}
           {site.profile.graduation && <p class="panel__muted">Expected graduation: {site.profile.graduation}</p>}
           {
             P && !site.profile.graduation && (

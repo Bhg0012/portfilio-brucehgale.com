@@ -13,6 +13,7 @@ Every file, image set, or link Bruce has provided. Add a row the moment somethin
 | S007 | 2026-10-20 | Bruce's chat messages: contact details, current role, AuburnSEO facts and clicks stat | statements | [auburnseo](projects/auburnseo.md) | [octave](experience/octave.md), [auburnseo](experience/auburnseo.md) | [S007](sources/S007-bruce-statements-2026-10-20.md) | used on site |
 | S008 | 2026-10-20 | https://auburnseo.com/ (home, terms, privacy pages) | website | [auburnseo](projects/auburnseo.md) | [auburnseo](experience/auburnseo.md) | [S008](sources/S008-auburnseo-website.md) | used in draft and on site |
 | S009 | 2026-10-20 | Octave logo from https://www.octave.com | logo | none | [octave](experience/octave.md) | [S009](sources/S009-octave-logo.md) | used on site |
+| S010 | 2026-10-20 | Bruce's chat answers: Honors College, AuburnSEO start date, Northridge mockup | statements | [auburnseo](projects/auburnseo.md) | [auburnseo](experience/auburnseo.md) | [S010](sources/S010-bruce-answers-2026-10-20.md) | used on site |
 
 Status values: new, summarized, used in draft, used in published page, not used (say why), needs Bruce
 

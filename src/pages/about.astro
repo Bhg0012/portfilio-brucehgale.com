@@ -28,7 +28,8 @@ const experience = await getExperience();
         <p class="eyebrow">About</p>
         <h1 id="about-title" class="intro__title">Hi, I'm {site.name.split(' ')[0]}.</h1>
         <p class="intro__lede">
-          I'm a {site.profile.program} student at {site.profile.school} with a minor in {site.profile.minor}.
+          I'm a {site.profile.program} student {site.profile.honors ? `in the ${site.profile.school} ${site.profile.honors}` : `at ${site.profile.school}`}{' '}
+          with a minor in {site.profile.minor}.
         </p>
         {
           P && (
@@ -64,6 +65,14 @@ const experience = await getExperience();
           <p class="panel__label">Minor</p>
           <p class="panel__value">{site.profile.minor}</p>
         </article>
+        {
+          site.profile.honors && (
+            <article class="panel">
+              <p class="panel__label">Honors</p>
+              <p class="panel__value">{site.profile.honors}</p>
+            </article>
+          )
+        }
         {
           site.profile.graduation ? (
             <article class="panel">
