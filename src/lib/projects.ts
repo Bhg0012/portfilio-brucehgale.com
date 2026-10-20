@@ -129,7 +129,7 @@ export const statusLabels: Record<Project['data']['status'], string> = {
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-function formatPartial(value: string): string {
+export function formatPartial(value: string): string {
   const [year, month] = value.split('-');
   return month ? `${MONTHS[Number(month) - 1]} ${year}` : year;
 }

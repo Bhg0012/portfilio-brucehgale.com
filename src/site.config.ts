@@ -56,7 +56,10 @@ export const site: SiteConfig = {
     graduation: undefined,
     location: undefined,
   },
-  contact: {},
+  contact: {
+    email: 'brhgale@gmail.com',
+    linkedin: 'https://www.linkedin.com/in/brucegale25/',
+  },
   resume: undefined,
 };
 

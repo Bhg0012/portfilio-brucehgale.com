@@ -262,4 +262,32 @@ const projects = defineCollection({
       }),
 });
 
-export const collections = { projects };
+/**
+ * Work history: jobs, internships, and businesses Bruce founded.
+ * One file per role in `content/experience/<slug>.md` (frontmatter only).
+ * Logos go in `content/experience/logos/`.
+ */
+const experience = defineCollection({
+  loader: glob({ base: './content/experience', pattern: '*.md' }),
+  schema: ({ image }) =>
+    z.object({
+      organization: nonEmpty,
+      role: nonEmpty,
+      type: z.enum(['founder', 'internship', 'part-time', 'full-time', 'contract', 'volunteer', 'leadership']),
+      /** "Huntsville, AL" or "Remote". */
+      location: nonEmpty.optional(),
+      start: partialDate.optional(),
+      end: partialDate.optional(),
+      /** Still in this role. */
+      current: z.boolean().default(false),
+      /** Square logo; omit to show the organization's initials. */
+      logo: image().optional(),
+      url: z.url().optional(),
+      highlights: z.array(nonEmpty).default([]),
+      skills: z.array(nonEmpty).default([]),
+      /** Slugs of related projects; linked only when the project is published. */
+      projects: z.array(z.string()).default([]),
+    }),
+});
+
+export const collections = { projects, experience };

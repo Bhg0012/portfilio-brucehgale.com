@@ -9,12 +9,16 @@ import Container from '../components/Container.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import Slot from '../components/Slot.astro';
 import ContactBand from '../components/ContactBand.astro';
+import ExperienceList from '../components/ExperienceList.astro';
+import { getExperience } from '../lib/experience';
 import { getProjects, toolsFrom } from '../lib/projects';
 import { profilePhoto } from '../lib/profile';
 import { site } from '../site.config';
 
 const P = site.placeholders;
-const tools = toolsFrom(await getProjects());
+const projects = await getProjects();
+const tools = toolsFrom(projects);
+const experience = await getExperience();
 ---
 
 <BaseLayout title="About" description={`About ${site.name}, ${site.profile.program} student at ${site.profile.school}.`}>
@@ -41,7 +45,7 @@ const tools = toolsFrom(await getProjects());
           src={profilePhoto.src}
           alt={profilePhoto.alt}
           widths={[320, 480, 640, 800]}
-          sizes="(min-width: 80rem) 22rem, (min-width: 48rem) 28vw, 16rem"
+          sizes="(min-width: 80rem) 16rem, (min-width: 48rem) 20vw, 12rem"
           loading="eager"
         />
       </figure>
@@ -91,27 +95,24 @@ const tools = toolsFrom(await getProjects());
   </section>
 
   {
-    P && (
+    (experience.length > 0 || P) && (
       <section class="block" aria-labelledby="experience">
         <Container>
           <SectionHeading
             id="experience"
             eyebrow="Experience"
             title="Where I've worked"
-            intro="Jobs and internships, most recent first."
+            intro="Jobs, internships, and the business I founded, most recent first."
           />
-          <ol class="timeline" role="list">
-            {[1, 2].map((n) => (
-              <li class="timeline__item">
-                <span class="timeline__dot" aria-hidden="true" />
-                <Slot
-                  title={`Role ${n}: organization, title, and dates`}
-                  text="What I was responsible for and what I accomplished, with links to related case studies. Organizations are named only with approval."
-                  source="catalog/experience/<slug>.md"
-                />
-              </li>
-            ))}
-          </ol>
+          {experience.length > 0 ? (
+            <ExperienceList items={experience} projects={projects} />
+          ) : (
+            <Slot
+              title="Roles: organization, title, and dates"
+              text="What I was responsible for and what I accomplished, with links to related case studies."
+              source="content/experience/"
+            />
+          )}
         </Container>
       </section>
     )
@@ -179,7 +180,7 @@ const tools = toolsFrom(await getProjects());
   }
   @media (min-width: 48rem) {
     .intro :global(.intro__inner) {
-      grid-template-columns: minmax(0, 1fr) clamp(15rem, 28vw, 22rem);
+      grid-template-columns: minmax(0, 1fr) clamp(12rem, 20vw, 16rem);
       gap: var(--space-8);
     }
   }
@@ -197,7 +198,7 @@ const tools = toolsFrom(await getProjects());
     line-height: var(--leading-snug);
   }
   .intro__photo {
-    width: min(60%, 16rem);
+    width: min(46%, 12rem);
     order: -1;
   }
   @media (min-width: 48rem) {
@@ -245,35 +246,6 @@ const tools = toolsFrom(await getProjects());
   .panel__value {
     font-size: var(--text-lg);
     font-weight: var(--weight-semibold);
-  }
-  .timeline {
-    position: relative;
-    display: grid;
-    gap: var(--space-5);
-    margin: 0;
-    padding: 0 0 0 var(--space-6);
-    list-style: none;
-  }
-  .timeline::before {
-    content: '';
-    position: absolute;
-    top: var(--space-2);
-    bottom: var(--space-2);
-    left: 0.4rem;
-    border-left: 1.5px dashed var(--color-border-strong);
-  }
-  .timeline__item {
-    position: relative;
-  }
-  .timeline__dot {
-    position: absolute;
-    top: 1.6rem;
-    left: calc(-1 * var(--space-6) + 0.1rem);
-    width: 0.75rem;
-    height: 0.75rem;
-    border: 2px solid var(--color-accent);
-    border-radius: 50%;
-    background: var(--color-bg);
   }
   .tools {
     display: grid;

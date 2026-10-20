@@ -45,6 +45,7 @@ Next: process uploaded dossiers per `docs/intake-workflow.md`, draft project con
 | `catalog/`                         | Private record of every upload: index, per-source summaries and extracted text, per-project and per-experience (job, internship, course) files | Tracked; requires a private repo |
 | `content/projects/<slug>/index.md` | Publication-ready project content                              | Tracked |
 | `content/projects/<slug>/images/`  | Approved project images (optimized at build)                   | Tracked |
+| `content/experience/<slug>.md`     | Work history (jobs, internships, AuburnSEO), logos in `content/experience/logos/` | Tracked |
 | `public/downloads/`                | Intentionally public files (resume, approved reports)          | Tracked |
 | `src/content.config.ts`            | Project schema: the single source of truth for fields          | Tracked |
 | `src/site.config.ts`               | Name, verified profile facts, focus areas, contact, resume path, placeholder switch | Tracked |
