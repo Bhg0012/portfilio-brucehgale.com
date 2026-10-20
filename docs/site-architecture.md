@@ -98,11 +98,14 @@ Add components when real content needs them, not in advance. Likely candidates a
 
 ## Hosting
 
-The site builds to static files in `dist/`. Cloudflare settings when deployment is set up:
+The site builds to static files in `dist/` and is served by a Cloudflare Worker with static assets (Workers Builds, connected to the GitHub repo).
 
+- Production branch: `main`. Every push to `main` rebuilds and redeploys.
 - Build command: `npm run build`
-- Output directory: `dist`
+- Deploy command: `npx wrangler deploy` (Cloudflare's default)
 - Node version: 22 (from `.node-version`)
+- [`wrangler.jsonc`](../wrangler.jsonc) tells Wrangler to upload `dist/` as static assets, serve `404.html` for unknown URLs, and use the Worker name from the dashboard (`portfilio-brucehgale-com1`). Without this file, Wrangler tries to add the Astro Cloudflare server adapter, which this static site does not need.
 - `public/_headers` sets long-term caching for fingerprinted assets and basic security headers.
+- Test locally on the same runtime: `npm run build && npx wrangler dev`.
 
-No server code, database, or environment variables are needed.
+No server code, database, or environment variables are needed. If the Worker is ever renamed in the dashboard, update `name` in `wrangler.jsonc` to match.

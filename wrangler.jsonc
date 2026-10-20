@@ -1,0 +1,12 @@
+// Cloudflare Workers deploy config: serves the static Astro build in dist/.
+// No server code and no Astro adapter: Cloudflare only hosts the files.
+// "name" must match the Worker created in the Cloudflare dashboard.
+{
+  "name": "portfilio-brucehgale-com1",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    // Serve dist/404.html with a real 404 status for unknown URLs.
+    "not_found_handling": "404-page"
+  }
+}

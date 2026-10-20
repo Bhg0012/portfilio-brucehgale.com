@@ -76,7 +76,7 @@ Everything in `public/` is reachable by URL, linked or not. Only place files the
 
 ## Deployment
 
-Static output, no server or environment variables. On Cloudflare: build command `npm run build`, output directory `dist`, Node 22. See [docs/site-architecture.md](docs/site-architecture.md#hosting).
+Static output, no server or environment variables. Cloudflare Workers Builds deploys `main`: build command `npm run build`, deploy command `npx wrangler deploy` (configured by `wrangler.jsonc`), Node 22. See [docs/site-architecture.md](docs/site-architecture.md#hosting).
 
 ## Next steps
 

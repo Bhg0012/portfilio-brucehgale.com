@@ -77,7 +77,7 @@ Raw intake material never goes into `content/` or `public/` without review. Priv
 3. Contact details and resume PDF added in `src/site.config.ts` and `public/downloads/`
 4. GitHub repository private (required by the catalog)
 5. `placeholders: false`, then `npm run validate`
-6. Connect Cloudflare (build `npm run build`, output `dist`, Node 22)
+6. Cloudflare Worker connected (production branch `main`, build `npm run build`, deploy `npx wrangler deploy` using `wrangler.jsonc`), custom domains `brucehgale.com` and `www` added
 
 ## Commands
 
