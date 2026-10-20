@@ -8,7 +8,7 @@ Revisions only use facts from Bruce's Carrd page, the linked decks (S003, S004),
 
 | Item | Original | Revised | Why |
 | ---- | -------- | ------- | --- |
-| Page title | Bruce Gale's Portfolio | Bruce Gale \| Business Analytics | Leads with the name and field, which is what search results and browser tabs show. |
+| Page title | Bruce Gale's Portfolio | Bruce Gale \| Portfolio | Leads with the name, which is what browser tabs, bookmarks, and search results show. (Bruce's choice, 2026-10-20.) |
 | Tagline | Business Analytics and Marketing student at Auburn University | Business Analytics student at Auburn University with a minor in Marketing. | Accurate: Marketing is the minor. The original reads like a double major. |
 | Meta description | Bruce's Experience in Data Analytics and Marketing | Bruce Gale is a Business Analytics student at Auburn University (minor in Marketing). Case studies in predictive modeling, social media analytics, and e-commerce. | Specific and keyword-rich instead of generic. Third person reads naturally in search results. |
 | Section heading | Projects | Selected work: "Projects that show how I work" | Tells a recruiter what to expect from each case study. |
