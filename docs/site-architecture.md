@@ -109,3 +109,5 @@ The site builds to static files in `dist/` and is served by a Cloudflare Worker 
 - Test locally on the same runtime: `npm run build && npx wrangler dev`.
 
 No server code, database, or environment variables are needed. If the Worker is ever renamed in the dashboard, update `name` in `wrangler.jsonc` to match.
+
+If pushes to `main` stop showing up on the live site, check that the Cloudflare GitHub app still has access to this repository (GitHub: Settings, Applications, Cloudflare Workers and Pages) and that the Worker's Build settings list this repo with `main` as the production branch. A deploy can also be started by hand from the Worker's Deployments page.
