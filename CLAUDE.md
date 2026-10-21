@@ -67,6 +67,7 @@ Raw intake material never goes into `content/` or `public/` without review. Priv
 - Placeholders (`Slot`) describe what will go somewhere; they never contain invented facts. Render a slot only when `site.placeholders` is true and the real content is missing.
 - Strip metadata (EXIF, GPS, document properties) from any image or file before committing it. If profile facts or the portrait change, re-run `python3 scripts/make-social-card.py`.
 - Use design tokens, not raw colors or sizes. Add components only when real content needs them.
+- **Design standard (Bruce, permanent):** the site must look professionally designed by an experienced web studio, never AI-generated or template-like. Favor restraint and craft: precise alignment and spacing, consistent icon style (brand marks filled, utility icons in one stroke weight), real logos and screenshots over illustrations, purposeful color. Avoid AI-template tells: emoji, gradient blobs or glows, decorative sparkles, generic feature-icon grids, stock illustrations, filler or hype copy ("unlock", "elevate", "seamless"), and overuse of pills, badges, or cards. Check every visual change at phone, tablet, and desktop widths before shipping.
 - Keep dependencies minimal. Current runtime deps: `astro`, `@astrojs/sitemap`.
 - Do not use em dashes in site copy or docs (Bruce's preference); use a single hyphen, a colon, or rephrase.
 - Use they/them or "Bruce" in docs; do not assume pronouns.

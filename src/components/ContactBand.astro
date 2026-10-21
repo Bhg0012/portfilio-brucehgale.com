@@ -2,6 +2,7 @@
 /** Closing call to action. Renders only when there is a way to get in touch. */
 import Container from './Container.astro';
 import Button from './Button.astro';
+import Icon from './Icon.astro';
 import { site, hasContact } from '../site.config';
 
 const { email, linkedin } = site.contact;
@@ -26,11 +27,13 @@ const focusText = `${focus.slice(0, -1).join(', ')}, and ${focus.at(-1)}`;
           <div class="band__actions">
             {email && (
               <Button href={`mailto:${email}`} variant="on-ink">
+                <Icon name="mail" />
                 Email me
               </Button>
             )}
             {linkedin && (
               <Button href={linkedin} variant="on-ink" rel="me">
+                <Icon name="linkedin" class="band__linkedin" />
                 LinkedIn
               </Button>
             )}
@@ -81,6 +84,9 @@ const focusText = `${focus.slice(0, -1).join(', ')}, and ${focus.at(-1)}`;
     color: var(--color-on-ink-muted);
     font-size: var(--text-lg);
     line-height: var(--leading-snug);
+  }
+  .band :global(.band__linkedin) {
+    color: var(--color-linkedin);
   }
   .band__actions {
     display: flex;

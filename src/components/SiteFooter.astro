@@ -1,15 +1,21 @@
 ---
 import Container from './Container.astro';
+import Icon from './Icon.astro';
 import { site } from '../site.config';
 import { getNavLinks } from '../lib/navigation';
 
 const links = await getNavLinks();
 const { email, linkedin, github } = site.contact;
-const contactLinks = [
-  email && { href: `mailto:${email}`, label: 'Email', rel: undefined },
-  linkedin && { href: linkedin, label: 'LinkedIn', rel: 'me' },
-  github && { href: github, label: 'GitHub', rel: 'me' },
-].filter((l): l is { href: string; label: string; rel: string | undefined } => Boolean(l));
+interface ContactLink {
+  href: string;
+  label: string;
+  rel?: string;
+  icon?: 'mail' | 'linkedin';
+}
+const contactLinks: ContactLink[] = [];
+if (email) contactLinks.push({ href: `mailto:${email}`, label: 'Email', icon: 'mail' });
+if (linkedin) contactLinks.push({ href: linkedin, label: 'LinkedIn', rel: 'me', icon: 'linkedin' });
+if (github) contactLinks.push({ href: github, label: 'GitHub', rel: 'me' });
 const year = new Date().getFullYear();
 ---
 
@@ -42,7 +48,8 @@ const year = new Date().getFullYear();
           {
             contactLinks.map((link) => (
               <li>
-                <a href={link.href} rel={link.rel}>
+                <a href={link.href} rel={link.rel} class="site-footer__contact">
+                  {link.icon && <Icon name={link.icon} />}
                   {link.label}
                 </a>
               </li>
@@ -87,6 +94,11 @@ const year = new Date().getFullYear();
   }
   .site-footer__links a:hover {
     color: var(--color-accent);
+  }
+  .site-footer__contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
   }
   .site-footer__copy {
     padding-block: var(--space-6) var(--space-7);

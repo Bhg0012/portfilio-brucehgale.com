@@ -29,6 +29,10 @@
   --color-on-ink-muted: #b6bbc4;
   --color-ink-border: #3a3f47;
 
+  /* Color: third-party brand marks (icons only) */
+  --color-linkedin: #0a66c2;
+  --color-linkedin-soft: #e8f1fa;
+
   /* Color: notices */
   --color-notice-bg: #fbf1d6;
   --color-notice-text: #573f00;
