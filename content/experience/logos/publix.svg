@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Publix">
+  <!-- Publix "P" mark, from the Publix wordmark (Wikimedia Commons: Publix_Logo.svg), white on Publix green. -->
+  <rect width="120" height="120" fill="#ffffff"/>
+  <circle cx="60" cy="60" r="54" fill="#3a913f"/>
+  <path fill="#ffffff" transform="translate(39 25) scale(0.55)" d="M0,39.08c0,0,0.12-35.61,43.24-35.61c61.87,0,60.88,88.98,1.25,88.98 c-12.12,0-21.18-3.06-26.74-7.51v35.5H0V39.08z M43.35,23.49c-30.14,0-30.52,47.45,0,47.45C73.96,70.94,73.49,23.49,43.35,23.49z"/>
+</svg>

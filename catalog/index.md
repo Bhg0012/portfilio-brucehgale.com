@@ -15,6 +15,7 @@ Every file, image set, or link Bruce has provided. Add a row the moment somethin
 | S009 | 2026-10-20 | Octave logo from https://www.octave.com | logo | none | [octave](experience/octave.md) | [S009](sources/S009-octave-logo.md) | used on site |
 | S010 | 2026-10-20 | Bruce's chat answers: Honors College, AuburnSEO start date, Northridge mockup | statements | [auburnseo](projects/auburnseo.md) | [auburnseo](experience/auburnseo.md) | [S010](sources/S010-bruce-answers-2026-10-20.md) | used on site |
 | S011 | 2026-10-26 | Bruce's request: "add my old portfolio projects to my new portfolio" | statement | [nba-predictive-modeling](projects/nba-predictive-modeling.md), [auburn-social-media-audit](projects/auburn-social-media-audit.md), [print-on-demand-apparel-store](projects/print-on-demand-apparel-store.md) | none | Approval to publish the three Carrd projects (2026-10-26). The Claude-proposed NBA improvements list was removed before publishing; AuburnSEO stays a draft. | used in published page |
+| S012 | 2026-10-26 | Padsnap logo (chat upload, 400x400 PNG) and request to add logos for Padsnap, Lowe's, Publix | image, statement | none | [padsnap](experience/padsnap.md), [lowes](experience/lowes.md), [publix](experience/publix.md) | [S012](sources/S012-employer-logos.md) | used on site |
 
 Status values: new, summarized, used in draft, used in published page, not used (say why), needs Bruce
 
