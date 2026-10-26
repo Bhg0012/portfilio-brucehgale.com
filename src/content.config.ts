@@ -118,7 +118,7 @@ const projects = defineCollection({
 
         // ── Context ────────────────────────────────────────────────
         context: z.object({
-          type: z.enum(['personal', 'academic', 'team', 'client', 'internship', 'work']),
+          type: z.enum(['personal', 'business', 'academic', 'team', 'client', 'internship', 'work']),
           /** Organization, client, or employer, only if approved for public naming. */
           organization: nonEmpty.optional(),
           /** Course name/number for academic work. */
@@ -235,6 +235,21 @@ const projects = defineCollection({
               label: nonEmpty,
               /** External URL, or a site path such as /downloads/<slug>/report.pdf */
               href: z.union([z.url(), z.string().regex(/^\/[^/]/)]),
+            }),
+          )
+          .default([]),
+
+        // ── Testimonials ───────────────────────────────────────────
+        /** Real client reviews only, quoted exactly ("..." marks omissions). */
+        testimonials: z
+          .array(
+            z.object({
+              quote: nonEmpty,
+              /** As shown publicly, e.g. "Travis R." */
+              name: nonEmpty,
+              /** e.g. "Google review" */
+              source: nonEmpty.optional(),
+              rating: z.number().int().min(1).max(5).optional(),
             }),
           )
           .default([]),

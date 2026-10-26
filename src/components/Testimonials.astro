@@ -1,0 +1,91 @@
+---
+/** Client quotes, set as a typographic grid. Real reviews only. */
+import type { Project } from '../lib/projects';
+
+interface Props {
+  items: Project['data']['testimonials'];
+}
+const { items } = Astro.props;
+---
+
+<ul class="quotes" role="list">
+  {
+    items.map((t) => (
+      <li class="quote">
+        <figure>
+          {t.rating && (
+            <p class="quote__stars" aria-label={`${t.rating} out of 5 stars`}>
+              {Array.from({ length: 5 }, (_, i) => (
+                <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" class:list={{ 'is-off': i >= t.rating! }}>
+                  <path d="M10 1.6l2.47 5.36 5.86.68-4.34 3.98 1.17 5.78L10 14.47 4.84 17.4l1.17-5.78L1.67 7.64l5.86-.68z" />
+                </svg>
+              ))}
+            </p>
+          )}
+          <blockquote>
+            <p>“{t.quote}”</p>
+          </blockquote>
+          <figcaption>
+            <span class="quote__name">{t.name}</span>
+            {t.source && <span class="quote__source">{t.source}</span>}
+          </figcaption>
+        </figure>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .quotes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .quote figure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    height: 100%;
+    margin: 0;
+    padding: var(--space-6) var(--space-5) var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .quote__stars {
+    display: flex;
+    gap: 2px;
+    color: var(--color-star);
+  }
+  .quote__stars svg {
+    fill: currentColor;
+  }
+  .quote__stars .is-off {
+    fill: var(--color-border-strong);
+  }
+  blockquote {
+    flex: 1;
+    margin: 0;
+    color: var(--color-text);
+    font-size: var(--text-base);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+  figcaption {
+    display: grid;
+    gap: 0.125rem;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+  }
+  .quote__name {
+    font-weight: var(--weight-semibold);
+  }
+  .quote__source {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+  }
+</style>

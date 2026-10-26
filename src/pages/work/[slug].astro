@@ -7,6 +7,7 @@ import Section from '../../components/Section.astro';
 import Figure from '../../components/Figure.astro';
 import ProjectMeta from '../../components/ProjectMeta.astro';
 import ToolList from '../../components/ToolList.astro';
+import Testimonials from '../../components/Testimonials.astro';
 import { getProjects, humanize, isPublic, type Project } from '../../lib/projects';
 
 export async function getStaticPaths() {
@@ -148,6 +149,14 @@ const linkLabels: Record<string, string> = {
               </section>
             )}
           </div>
+        )
+      }
+
+      {
+        d.testimonials.length > 0 && (
+          <Section title="What clients say" id="reviews">
+            <Testimonials items={d.testimonials} />
+          </Section>
         )
       }
 

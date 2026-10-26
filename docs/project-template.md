@@ -17,7 +17,7 @@ capabilities: [] # problem-framing, analysis-and-recommendations, building-solut
 # tags: []
 
 context:
-  type: personal # personal, academic, team, client, internship, work
+  type: personal # personal, business (one Bruce founded), academic, team, client, internship, work
   # organization: ''         # only if approved for public naming
   # course: ''
   # teamSize: 4

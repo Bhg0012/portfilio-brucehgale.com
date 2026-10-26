@@ -4,7 +4,7 @@
 - Related experience: [auburnseo](../experience/auburnseo.md) (founder)
 - Sources: S007, S008
 - Work status: ongoing
-- Website page: draft (`content/projects/auburnseo/`)
+- Website page: published 2026-10-26 (`content/projects/auburnseo/`); see S013 and S015
 
 ## Facts (with source IDs)
 

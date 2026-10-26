@@ -13,7 +13,7 @@ capabilities: [building-solutions, analysis-and-recommendations]
 tags: [E-commerce, Entrepreneurship, Local marketing, Classification]
 
 context:
-  type: personal
+  type: business
 
 dates:
   start: '2023'

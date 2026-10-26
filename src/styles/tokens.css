@@ -32,6 +32,8 @@
   /* Color: third-party brand marks (icons only) */
   --color-linkedin: #0a66c2;
   --color-linkedin-soft: #e8f1fa;
+  /* Review stars (Google's star color) */
+  --color-star: #f5b301;
 
   /* Color: notices */
   --color-notice-bg: #fbf1d6;

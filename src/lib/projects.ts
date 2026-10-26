@@ -112,6 +112,7 @@ export function toolsFrom(projects: Project[]) {
 
 export const contextLabels: Record<Project['data']['context']['type'], string> = {
   personal: 'Personal project',
+  business: 'Own business',
   academic: 'Academic project',
   team: 'Team project',
   client: 'Client project',
