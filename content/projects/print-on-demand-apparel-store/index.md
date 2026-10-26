@@ -4,7 +4,7 @@ slug: print-on-demand-apparel-store
 summary: I started and ran an online print-on-demand T-shirt shop, marketed it around the Auburn campus, and used my own sales data to track customers and predict delivery times.
 overview: I founded and managed a print-on-demand T-shirt business on Etsy from end to end. Along the way I focused marketing on the Auburn campus, built charts and maps to understand who was buying, and trained a model to predict whether an order would take more or less than a week to arrive.
 
-publication: draft
+publication: published
 featured: true
 order: 3
 

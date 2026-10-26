@@ -4,7 +4,7 @@ slug: nba-predictive-modeling
 summary: A class project that turned 18 seasons of NBA team stats into three Python models. The best one picked playoff teams with 80% precision.
 overview: Can a team's regular-season stats tell you whether it will make the playoffs, how many games it will win, or whether it will win the title? For BUAL 5610, a team of three built and compared three machine learning models in Python to find out, and to see which ones were reliable enough to use.
 
-publication: draft
+publication: published
 featured: true
 order: 1
 
@@ -100,9 +100,6 @@ reflection:
   limitations:
     - The wins and championship models are not consistent enough for a team or sportsbook to rely on.
     - Injuries, trades, and coaching changes can swing a season, and none of them are in the data.
-  improvements:
-    - Test on future seasons (train on earlier years, predict later ones) instead of a random split, to mirror how a forecast would really be used.
-    - Add player availability, such as injuries and trades, as predictors.
 ---
 
 ## The question

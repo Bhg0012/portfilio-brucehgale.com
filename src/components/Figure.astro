@@ -24,6 +24,7 @@ const widths = [480, 800, 1200, 1600].filter((w) => w < src.width).concat(src.wi
     loading={priority ? 'eager' : 'lazy'}
     fetchpriority={priority ? 'high' : undefined}
     class="figure__image"
+    style={`max-width: min(100%, ${src.width}px)`}
   />
   {caption && <figcaption class="figure__caption">{caption}</figcaption>}
 </figure>
@@ -38,7 +39,7 @@ const widths = [480, 800, 1200, 1600].filter((w) => w < src.width).concat(src.wi
     /* Natural size up to the column width; tall images are capped so they fit on screen. */
     width: auto;
     max-width: 100%;
-    max-height: min(85vh, 56rem);
+    max-height: min(80vh, 44rem);
     margin-inline: auto;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);

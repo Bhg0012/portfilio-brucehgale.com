@@ -7,8 +7,8 @@ import { getProjects } from '../../lib/projects';
 import { site } from '../../site.config';
 
 const projects = await getProjects();
-// In placeholder mode, show up to six cards so the page reads as it will at launch.
-const fillerCount = site.placeholders ? Math.max(0, 6 - projects.length) : 0;
+// In placeholder mode, show at least three cards so the layout can be judged.
+const fillerCount = site.placeholders ? Math.max(0, 3 - projects.length) : 0;
 ---
 
 <BaseLayout
