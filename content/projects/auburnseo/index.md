@@ -64,9 +64,6 @@ tools:
   - name: Stripe
     area: integration
     purpose: Recurring monthly billing for every client.
-  - name: MXToolbox
-    area: other
-    purpose: Checking DNS and email deliverability on client domains.
   - name: Loom
     area: collaboration
     purpose: Recorded walkthroughs to hand finished sites to clients.

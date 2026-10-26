@@ -17,7 +17,7 @@ skills:
   - Web design
   - Local SEO
   - Lead generation
-  - Meta ads
+  - Meta Ads Manager
   - GoHighLevel
   - Marketing automation
 projects:
