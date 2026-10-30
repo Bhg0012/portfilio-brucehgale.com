@@ -3,7 +3,7 @@ title: 'Tally: A Local AI Data Analyst for Spreadsheets'
 slug: tally
 shortTitle: Tally
 summary: A desktop app I designed and directed that turns any spreadsheet into a short, statistically checked story in plain English, using a private local AI model that is never allowed to invent numbers.
-overview: Many people have a spreadsheet and no idea where to start. Power BI and Excel take training, and AI chatbots can miscalculate or call random noise a trend. I set out to build a tool for complete beginners that is accurate first and simple second, then directed an AI coding assistant through the build and tested every version on my own Mac.
+overview: Many people have a spreadsheet and no idea where to start. Power BI and Excel take training, and AI chatbots can miscalculate, call random noise a trend, and require uploading sensitive data to someone else's servers. I set out to build a tool for complete beginners that is accurate first and simple second, then directed an AI coding assistant through the build and tested every version on my own Mac.
 
 publication: published
 featured: true
@@ -157,7 +157,15 @@ reflection:
 
 Tools like Power BI are powerful, but you have to learn the software, clean the data by hand, and already know which columns are worth looking at. I wanted someone who has never analyzed data to drop in a spreadsheet and get back something they can understand and present.
 
-AI chatbots seem like the shortcut, but they are risky for this. They can get arithmetic wrong, describe random noise as a trend, and send private data to a hosted service. So my first rule was accuracy above everything, and my second was that no user should ever feel overwhelmed.
+My rules were simple: accuracy above everything, no user should ever feel overwhelmed, and private data stays private.
+
+## Why not just ask ChatGPT?
+
+It is a fair question, and it shaped the whole design. Tally does three things a general chatbot does not:
+
+- **Your data never leaves your computer.** Tally's AI model runs locally through Ollama, so a spreadsheet of customer lists, sales, finances, or employee records is never sent to a public AI service. For sensitive or confidential data, that is the difference between being able to use AI at all and not.
+- **The numbers are checked, not guessed.** A chatbot does the math itself and can get it wrong or treat noise as a trend. In Tally, real statistical tests decide what is true, and the AI is not allowed to change or add a single number.
+- **A story you can present, not a wall of text.** Findings come back as short chapters with clear charts, and "Play the story" replays them as full-screen slides, like Spotify Wrapped for your data. Reports export to PDF, PNG, or an interactive web page to share.
 
 ## The key decision: statistics do the math, AI writes the words
 
