@@ -16,7 +16,7 @@ Public writing: straightforward, confident, plain English, with technical depth 
 
 ## Current phase
 
-**Live and indexable.** Four published projects, placeholder mode off (`placeholders: false`), so there is no preview banner, no dashed slots, and pages are indexable. The homepage `headline` and the About story were drafted by Claude from verified sources (catalog S007, S010, S013, S016, project files) and are awaiting Bruce's final wording approval. The homepage stats row (`highlights`) is supported but turned off at Bruce's request; add values back in `src/site.config.ts` to show it.
+**Live and indexable.** Five published projects (AuburnSEO first, Tally second), placeholder mode off (`placeholders: false`), so there is no preview banner, no dashed slots, and pages are indexable. The homepage `headline` and the About story were drafted by Claude from verified sources (catalog S007, S010, S013, S016, project files) and are awaiting Bruce's final wording approval. The homepage stats row (`highlights`) is supported but turned off at Bruce's request; add values back in `src/site.config.ts` to show it.
 
 Next: resume PDF, any new projects or materials Bruce uploads, and refinements Bruce asks for.
 

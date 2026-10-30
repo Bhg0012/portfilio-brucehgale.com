@@ -7,7 +7,7 @@ overview: I founded and managed a print-on-demand T-shirt business on Etsy from 
 
 publication: published
 featured: true
-order: 3
+order: 4
 
 categories: [marketing-campaign, operations, data-analysis]
 capabilities: [building-solutions, analysis-and-recommendations]

@@ -20,6 +20,7 @@ Every file, image set, or link Bruce has provided. Add a row the moment somethin
 | S014 | 2026-10-26 | Google Business Profile share link for AuburnSEO | link | [auburnseo](projects/auburnseo.md) | [auburnseo](experience/auburnseo.md) | Could not be read: Google showed an automated-traffic check. Bruce sent screenshots instead (S015). | not used (blocked) |
 | S015 | 2026-10-26 | Four Google review screenshots for AuburnSEO, plus Bruce's answers and corrections | images, statements | [auburnseo](projects/auburnseo.md) | [auburnseo](experience/auburnseo.md) | [S015](sources/S015-auburnseo-reviews-and-answers.md) | used in published page |
 | S016 | 2026-10-30 | LinkedIn screenshots: experience section, profile header, education section | images | none | [lowes](experience/lowes.md), [octave](experience/octave.md) | [S016](sources/S016-linkedin-profile-education.md) | used on site |
+| S017 | 2026-10-30 | Tally_Project_Dossier (.md, .docx, .pdf) and Tally_Dossier_Images.zip (12 screenshots) | dossier, images | [tally](projects/tally.md) | none | [S017](sources/S017-tally-project-dossier.md) | used in published page |
 
 Status values: new, summarized, used in draft, used in published page, not used (say why), needs Bruce
 

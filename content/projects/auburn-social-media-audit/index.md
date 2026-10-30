@@ -7,7 +7,7 @@ overview: How well is Auburn University using social media to reach students, fa
 
 publication: published
 featured: true
-order: 2
+order: 3
 
 categories: [market-research, strategy]
 capabilities: [problem-framing, analysis-and-recommendations, business-communication]

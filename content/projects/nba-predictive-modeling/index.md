@@ -7,7 +7,7 @@ overview: Can a team's regular-season stats tell you whether it will make the pl
 
 publication: published
 featured: true
-order: 1
+order: 2
 
 categories: [data-analysis]
 capabilities: [problem-framing, analysis-and-recommendations, building-solutions]
