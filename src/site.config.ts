@@ -86,12 +86,6 @@ export const site: SiteConfig = {
   },
   headline:
     'I founded and run AuburnSEO, a local marketing agency for Alabama contractors, and I build predictive models in Python. I study Business Analytics in the Honors College, with a minor in Marketing.',
-  highlights: [
-    { value: '14', label: 'subscription clients at AuburnSEO, the agency I founded', href: '/work/auburnseo/' },
-    { value: '80%', label: 'precision picking NBA playoff teams with a model I helped build', href: '/work/nba-predictive-modeling/' },
-    { value: '5', label: "social platforms audited for Auburn University", href: '/work/auburn-social-media-audit/' },
-    { value: '4.0', label: 'GPA in the Auburn University Honors College', href: '/about/' },
-  ],
   resume: undefined,
 };
 
