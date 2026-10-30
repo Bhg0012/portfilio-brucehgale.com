@@ -24,4 +24,4 @@ A solo personal project. Bruce designed a local desktop app that turns any sprea
 
 - Described as "designed and directed" an AI-assisted build, not "built," per the dossier's ownership section.
 - Every figure caption that shows data notes it is synthetic sample data where relevant.
-- Repository link withheld until Bruce confirms it is public.
+- Repository link added after Bruce confirmed it is public (2026-10-30).

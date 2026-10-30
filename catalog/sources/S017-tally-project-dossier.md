@@ -26,12 +26,11 @@ Ownership: Bruce conceived the product, wrote the brief and non-negotiables, mad
 
 - The title of Bruce's own analysis seen in History (personal dataset; the dossier says not to publish it without permission).
 - Bruce's email address (in the repository's commit metadata).
-- The repository link, until Bruce confirms the repository is public.
 - Mascot, settings, history, and PDF export screenshots (not needed to make the case).
 
 ## Needs Bruce
 
-- Confirm the repository https://github.com/Bhg0012/ai-data-analysis-agent is public before it is linked.
+- Repository confirmed public by Bruce on 2026-10-30 and linked from the case study.
 - Whether Codex was used on this project during the documented period (git history shows no Codex commits).
 - Whether anyone else has tried Tally, and AI speed and quality on Bruce's Mac.
 - Optional screenshots: an AI-written chapter from the default model on the Mac, the Desktop/Dock icon, the update message in Terminal.

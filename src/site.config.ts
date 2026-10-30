@@ -85,7 +85,7 @@ export const site: SiteConfig = {
     linkedin: 'https://www.linkedin.com/in/brucegale25/',
   },
   headline:
-    'I founded and run AuburnSEO, a local marketing agency for Alabama contractors, where I use AI and automation to build sites, create ads, and follow up with every lead. I also do digital marketing at Octave and study Business Analytics in the Honors College.',
+    'I founded and run AuburnSEO, a local marketing agency for Alabama contractors, and I designed Tally, a local AI tool that turns spreadsheets into plain-English findings. I also do digital marketing at Octave and study Business Analytics in the Honors College.',
   resume: undefined,
 };
 

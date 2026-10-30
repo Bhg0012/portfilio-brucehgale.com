@@ -133,6 +133,11 @@ figures:
     alt: Two full-screen slides from Play the story, a big "36%" revenue growth number and the trend chart that proves it
     caption: '"Play the story" replays the findings as full-screen slides, an idea I took from Spotify Wrapped.'
 
+links:
+  - kind: repository
+    label: Source code on GitHub
+    href: https://github.com/Bhg0012/ai-data-analysis-agent
+
 reflection:
   lessons:
     - Use AI where it is strong, which is language, and code where accuracy is required.
