@@ -85,8 +85,6 @@ const linkLabels: Record<string, string> = {
     </header>
 
     <Container>
-      {d.cover && <Figure src={d.cover.src} alt={d.cover.alt} priority />}
-
       {
         (hasProblem || d.contributions.length > 0 || d.results.length > 0) && (
           <div class="glance">
@@ -148,6 +146,15 @@ const linkLabels: Record<string, string> = {
                 </ul>
               </section>
             )}
+          </div>
+        )
+      }
+
+      <!-- Cover after the summary, so the facts are in the first screen. -->
+      {
+        d.cover && (
+          <div class="cover">
+            <Figure src={d.cover.src} alt={d.cover.alt} priority />
           </div>
         )
       }
@@ -319,6 +326,9 @@ const linkLabels: Record<string, string> = {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
     gap: var(--space-5);
+    margin-top: var(--space-5);
+  }
+  .cover {
     margin-top: var(--space-7);
   }
   .glance__panel {

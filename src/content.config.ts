@@ -95,6 +95,8 @@ const projects = defineCollection({
         slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'Lowercase words separated by hyphens'),
         /** One or two sentences for cards, search results, and link previews. */
         summary: nonEmpty.max(220),
+        /** Short name for tight spaces such as skill and tool lists, e.g. "NBA models". */
+        shortTitle: nonEmpty.max(32).optional(),
         /** Optional longer lede shown at the top of the project page. */
         overview: nonEmpty.optional(),
 

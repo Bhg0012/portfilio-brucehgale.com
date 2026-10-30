@@ -1,6 +1,7 @@
 ---
 title: Predicting NBA Playoff Teams, Wins, and Champions
 slug: nba-predictive-modeling
+shortTitle: NBA models
 summary: A class project that turned 18 seasons of NBA team stats into three Python models. The best one picked playoff teams with 80% precision.
 overview: Can a team's regular-season stats tell you whether it will make the playoffs, how many games it will win, or whether it will win the title? For BUAL 5610, a team of three built and compared three machine learning models in Python to find out, and to see which ones were reliable enough to use.
 
@@ -68,13 +69,13 @@ ai:
   assistance: The team used ChatGPT to help enhance the championship model, the support vector classifier. This is documented in the project's sources. The models themselves do not use AI at runtime; they are standard scikit-learn models.
 
 cover:
-  src: ./images/playoff-model-results.png
-  alt: Slide showing the playoff model's classification report, with 80% precision and a 0.84 F1 score highlighted, next to a table of predicted and actual playoff results
+  src: ./images/actual-vs-predicted-wins.png
+  alt: 'Chart of actual versus predicted regular-season wins for five team-seasons: 2015 Warriors 67 actual and 67 predicted, 2020 Clippers 56 and 51, 2017 Celtics 53 and 56, 2021 Cavaliers 25 and 29, 2019 Knicks 17 and 23'
 
 figures:
-  - src: ./images/season-wins-predictions.png
-    alt: Slide reporting a 24.57% mean absolute percentage error, with actual and predicted wins for five team-seasons, including the 2015 Warriors (67 actual, 67 predicted)
-    caption: Win totals were easiest to predict for the very best and worst teams. Average teams have a mix of strong and weak stats, which makes them harder to call.
+  - src: ./images/playoff-model-results.png
+    alt: Slide showing the playoff model's classification report, with 80% precision and a 0.84 F1 score highlighted, next to a table of predicted and actual playoff results
+    caption: The playoff model's results. When it predicted a team would make the playoffs, it was right 80% of the time.
   - src: ./images/decision-tree-plot.png
     alt: Slide listing the decision tree model's setup next to a plot of the fitted tree
     caption: The wins model, a decision tree with a maximum depth of 15, checked with 5-fold cross-validation.

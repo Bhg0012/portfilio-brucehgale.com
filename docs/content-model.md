@@ -51,6 +51,8 @@ Writing tips that help skimmers: lead with the business problem, not the dataset
 
 ## Field guidance
 
+**shortTitle**: optional short name (32 characters max) used where the full title is too long, such as the skills list and tool groups.
+
 **summary** (required): one or two plain sentences: what it is and why it mattered. Used on cards, in search results, and in link previews.
 
 **categories** (required) describe the kind of work. **capabilities** connect the project to what employers should see (problem framing, analysis, building, applied AI, infrastructure, troubleshooting, communication). Claim a capability only if the page shows it. The homepage lists each claimed capability with the projects that demonstrate it, so every claim links to evidence.

@@ -1,6 +1,7 @@
 ---
 title: 'AuburnSEO: Websites and Local Marketing for Alabama Contractors'
 slug: auburnseo
+shortTitle: AuburnSEO
 summary: I founded AuburnSEO LLC in May 2026, a one-person web design and local marketing agency for Alabama contractors, and grew it to 14 subscription clients.
 overview: Contractors were being quoted thousands of dollars up front for websites that brought in no customers. I started AuburnSEO to offer a better deal, with no upfront cost and one flat monthly rate, and I run every part of it myself, from the ads that bring in clients to building their sites and billing.
 

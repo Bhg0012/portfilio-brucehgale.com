@@ -16,9 +16,9 @@ Public writing: straightforward, confident, plain English, with technical depth 
 
 ## Current phase
 
-**Placeholder site built; waiting for source materials.** The site runs in placeholder mode (`placeholders: true` in `src/site.config.ts`): dashed "Coming soon" slots show where every missing piece goes, and all pages are `noindex`. (Temporary: once Bruce supplies materials and asks for building, proceed with intake, content writing, homepage messaging, and design refinement. Do not treat this section as a reason to hold back.)
+**Live and indexable.** Four published projects, placeholder mode off (`placeholders: false`), so there is no preview banner, no dashed slots, and pages are indexable. The homepage `headline` and `highlights` and the About story were drafted by Claude from verified sources (catalog S007, S010, S013, S016, project files) and are awaiting Bruce's final wording approval.
 
-Next: process uploaded dossiers per `docs/intake-workflow.md`, draft project content, then write homepage and About copy from approved material.
+Next: resume PDF, any new projects or materials Bruce uploads, and refinements Bruce asks for.
 
 ## Accuracy and authorship (permanent)
 

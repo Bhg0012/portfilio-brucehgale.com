@@ -46,6 +46,16 @@ export interface SiteConfig {
     /** Full GitHub profile URL. */
     github?: string;
   };
+  /**
+   * Homepage positioning: one or two plain sentences, built only from facts
+   * in the published projects and experience. Bruce approves the wording.
+   */
+  headline?: string;
+  /**
+   * Key numbers shown under the homepage hero. Each one must already appear,
+   * with evidence, in the project or profile it links to.
+   */
+  highlights?: { value: string; label: string; href: string }[];
   /** Site path to an approved resume in public/downloads/, e.g. "/downloads/bruce-gale-resume.pdf". */
   resume?: string;
 }
@@ -56,7 +66,7 @@ export const site: SiteConfig = {
   description:
     'Portfolio of Bruce Gale, a Business Analytics student in the Auburn University Honors College with a minor in Marketing.',
   locale: 'en_US',
-  placeholders: true,
+  placeholders: false,
   profile: {
     program: 'Business Analytics',
     school: 'Auburn University',
@@ -74,6 +84,14 @@ export const site: SiteConfig = {
     email: 'brhgale@gmail.com',
     linkedin: 'https://www.linkedin.com/in/brucegale25/',
   },
+  headline:
+    'I founded and run AuburnSEO, a local marketing agency for Alabama contractors, and I build predictive models in Python. I study Business Analytics in the Honors College, with a minor in Marketing.',
+  highlights: [
+    { value: '14', label: 'subscription clients at AuburnSEO, the agency I founded', href: '/work/auburnseo/' },
+    { value: '80%', label: 'precision picking NBA playoff teams with a model I helped build', href: '/work/nba-predictive-modeling/' },
+    { value: '5', label: "social platforms audited for Auburn University", href: '/work/auburn-social-media-audit/' },
+    { value: '4.0', label: 'GPA in the Auburn University Honors College', href: '/about/' },
+  ],
   resume: undefined,
 };
 

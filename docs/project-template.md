@@ -5,6 +5,7 @@
 
 title: ''
 slug: '' # must equal the folder name; never change after publishing
+# shortTitle: ''             # optional short name for skill and tool lists
 summary: '' # 1-2 sentences, max 220 characters
 # overview: ''               # optional longer lede for the project page
 

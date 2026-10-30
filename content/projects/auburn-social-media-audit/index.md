@@ -1,6 +1,7 @@
 ---
 title: Auburn University Social Media Audit
 slug: auburn-social-media-audit
+shortTitle: Social media audit
 summary: A year of Auburn's Instagram, Facebook, X, LinkedIn, and TikTok performance, benchmarked against four peer universities and turned into platform-by-platform recommendations.
 overview: How well is Auburn University using social media to reach students, families, and alumni? On a team of four, I analyzed a year of performance across five platforms, compared Auburn with rival and aspirant schools, and worked with Auburn's social media team to turn the analytics into recommendations for every channel.
 

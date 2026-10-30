@@ -94,13 +94,20 @@ export function capabilitiesFrom(projects: Project[]) {
   return capabilityEvidence(projects).filter((c) => c.projects.length > 0);
 }
 
+/** The short name for tight spaces, falling back to the full title. */
+export function shortTitle(project: Project): string {
+  return project.data.shortTitle ?? project.data.title;
+}
+
+type ToolArea = Project['data']['tools'][number]['area'];
+
 /** Unique tools across projects, each with the projects that used it, ordered by use. */
 export function toolsFrom(projects: Project[]) {
-  const tools = new Map<string, { name: string; projects: Project[] }>();
+  const tools = new Map<string, { name: string; area: ToolArea; projects: Project[] }>();
   for (const project of projects) {
     for (const tool of project.data.tools) {
       const key = tool.name.toLowerCase();
-      const entry = tools.get(key) ?? { name: tool.name, projects: [] };
+      const entry = tools.get(key) ?? { name: tool.name, area: tool.area, projects: [] };
       if (!entry.projects.includes(project)) entry.projects.push(project);
       tools.set(key, entry);
     }
@@ -108,6 +115,24 @@ export function toolsFrom(projects: Project[]) {
   return [...tools.values()].sort(
     (a, b) => b.projects.length - a.projects.length || a.name.localeCompare(b.name),
   );
+}
+
+/** Display groups for tool areas, in reading order. Every area belongs to one group. */
+const toolGroupAreas: { label: string; areas: ToolArea[] }[] = [
+  { label: 'Data and analysis', areas: ['language', 'analysis', 'visualization', 'data-storage', 'research'] },
+  { label: 'Marketing and web', areas: ['marketing', 'app-hosting', 'design'] },
+  { label: 'Operations and workflow', areas: ['integration', 'automation', 'collaboration', 'source-control', 'other'] },
+  { label: 'AI', areas: ['ai-assist', 'ai-runtime'] },
+];
+
+/** Tools grouped for display, alphabetical within each group; empty groups are dropped. */
+export function groupTools(tools: ReturnType<typeof toolsFrom>) {
+  return toolGroupAreas
+    .map((g) => ({
+      label: g.label,
+      tools: tools.filter((t) => g.areas.includes(t.area)).sort((a, b) => a.name.localeCompare(b.name)),
+    }))
+    .filter((g) => g.tools.length > 0);
 }
 
 export const contextLabels: Record<Project['data']['context']['type'], string> = {
