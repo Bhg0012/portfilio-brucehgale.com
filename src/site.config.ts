@@ -24,6 +24,13 @@ export interface SiteConfig {
     minor: string;
     /** e.g. "Honors College", once confirmed. */
     honors?: string;
+    /** e.g. "B.S. in Business Administration" */
+    degree?: string;
+    /** e.g. "Harbert College of Business" */
+    college?: string;
+    gpa?: string;
+    /** Organizations and activities, e.g. "Delta Sigma Pi". */
+    activities?: { name: string; detail?: string }[];
     /** Areas Bruce is targeting, as Bruce described them. */
     focusAreas: string[];
     /** e.g. "May 2027". Unconfirmed until Bruce provides it. */
@@ -55,9 +62,13 @@ export const site: SiteConfig = {
     school: 'Auburn University',
     minor: 'Marketing',
     honors: 'Honors College',
+    degree: 'B.S. in Business Administration',
+    college: 'Harbert College of Business',
+    gpa: '4.0',
+    activities: [{ name: 'Delta Sigma Pi', detail: 'Professional business fraternity' }],
     focusAreas: ['Business analytics', 'Data', 'Marketing', 'Business operations', 'Applied AI'],
-    graduation: undefined,
-    location: undefined,
+    graduation: 'May 2027',
+    location: 'Auburn, Alabama',
   },
   contact: {
     email: 'brhgale@gmail.com',

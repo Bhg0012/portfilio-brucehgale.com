@@ -19,6 +19,7 @@ Every file, image set, or link Bruce has provided. Add a row the moment somethin
 | S013 | 2026-10-26 | AuburnSEO_Fact_Sheet.md (compiled by Bruce's Claude project from his Business Overview doc, Monthly Expenses sheet, and notes) | Markdown | [auburnseo](projects/auburnseo.md) | [auburnseo](experience/auburnseo.md) | [S013](sources/S013-auburnseo-fact-sheet.md) (sanitized; full file kept local in intake/) | used in draft and on site |
 | S014 | 2026-10-26 | Google Business Profile share link for AuburnSEO | link | [auburnseo](projects/auburnseo.md) | [auburnseo](experience/auburnseo.md) | Could not be read: Google showed an automated-traffic check. Bruce sent screenshots instead (S015). | not used (blocked) |
 | S015 | 2026-10-26 | Four Google review screenshots for AuburnSEO, plus Bruce's answers and corrections | images, statements | [auburnseo](projects/auburnseo.md) | [auburnseo](experience/auburnseo.md) | [S015](sources/S015-auburnseo-reviews-and-answers.md) | used in published page |
+| S016 | 2026-10-30 | LinkedIn screenshots: experience section, profile header, education section | images | none | [lowes](experience/lowes.md), [octave](experience/octave.md) | [S016](sources/S016-linkedin-profile-education.md) | used on site |
 
 Status values: new, summarized, used in draft, used in published page, not used (say why), needs Bruce
 

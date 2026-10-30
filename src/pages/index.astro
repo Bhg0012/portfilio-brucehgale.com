@@ -225,9 +225,15 @@ const personLd = {
         <article class="panel">
           <p class="panel__label">Education</p>
           <h3 class="panel__title">{site.profile.school}</h3>
-          <p>{site.profile.program}</p>
+          <p>{site.profile.degree ? `${site.profile.degree}, ${site.profile.program}` : site.profile.program}</p>
           <p class="panel__muted">Minor in {site.profile.minor}</p>
-          {site.profile.honors && <p class="panel__muted">{site.profile.honors}</p>}
+          {
+            (site.profile.honors || site.profile.gpa) && (
+              <p class="panel__muted">
+                {[site.profile.honors, site.profile.gpa && `${site.profile.gpa} GPA`].filter(Boolean).join(' · ')}
+              </p>
+            )
+          }
           {site.profile.graduation && <p class="panel__muted">Expected graduation: {site.profile.graduation}</p>}
           {
             P && !site.profile.graduation && (

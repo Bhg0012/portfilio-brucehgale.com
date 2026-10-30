@@ -55,51 +55,63 @@ const experience = await getExperience();
 
   <section class="block" aria-labelledby="education">
     <Container>
-      <SectionHeading id="education" eyebrow="Education" title={site.profile.school} />
+      <SectionHeading
+        id="education"
+        eyebrow="Education"
+        title={site.profile.school}
+        intro={[site.profile.college, site.profile.degree].filter(Boolean).join(' · ') || undefined}
+      />
       <div class="grid">
-        <article class="panel">
-          <p class="panel__label">Major</p>
-          <p class="panel__value">{site.profile.program}</p>
-        </article>
-        <article class="panel">
-          <p class="panel__label">Minor</p>
-          <p class="panel__value">{site.profile.minor}</p>
-        </article>
         {
-          site.profile.honors && (
-            <article class="panel">
-              <p class="panel__label">Honors</p>
-              <p class="panel__value">{site.profile.honors}</p>
-            </article>
-          )
+          [
+            { label: 'Major', value: site.profile.program },
+            { label: 'Minor', value: site.profile.minor },
+            site.profile.honors && { label: 'Honors', value: site.profile.honors },
+            site.profile.gpa && { label: 'GPA', value: site.profile.gpa },
+            site.profile.graduation && { label: 'Expected graduation', value: site.profile.graduation },
+          ]
+            .filter((i): i is { label: string; value: string } => Boolean(i))
+            .map((i) => (
+              <article class="panel">
+                <p class="panel__label">{i.label}</p>
+                <p class="panel__value">{i.value}</p>
+              </article>
+            ))
         }
+        {P && !site.profile.graduation && <Slot title="Expected graduation" source="src/site.config.ts → profile.graduation" />}
+      </div>
+      <div class="grid grid--wide">
         {
-          site.profile.graduation ? (
+          site.profile.activities && site.profile.activities.length > 0 ? (
             <article class="panel">
-              <p class="panel__label">Expected graduation</p>
-              <p class="panel__value">{site.profile.graduation}</p>
+              <p class="panel__label">Organizations</p>
+              {site.profile.activities.map((a) => (
+                <p class="panel__value">
+                  {a.name}
+                  {a.detail && <span class="panel__detail">{a.detail}</span>}
+                </p>
+              ))}
             </article>
           ) : (
-            P && <Slot title="Expected graduation" source="src/site.config.ts → profile.graduation" />
+            P && (
+              <Slot
+                title="Honors, organizations, and activities"
+                text="Confirmed items only, with roles and dates."
+                source="src/site.config.ts → profile.activities"
+              />
+            )
           )
         }
-      </div>
-      {
-        P && (
-          <div class="grid grid--wide">
+        {
+          P && (
             <Slot
               title="Relevant coursework"
               text="Courses that connect to the work on this site, linked to class projects where they exist."
               source="catalog/experience/ → approved details"
             />
-            <Slot
-              title="Honors, organizations, and activities"
-              text="Confirmed items only, with roles and dates."
-              source="catalog/experience/ → approved details"
-            />
-          </div>
-        )
-      }
+          )
+        }
+      </div>
     </Container>
   </section>
 
@@ -230,15 +242,17 @@ const experience = await getExperience();
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
     gap: var(--space-4);
   }
   .grid--wide {
+    align-items: start;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
     margin-top: var(--space-4);
   }
   .panel {
     display: grid;
+    align-content: start;
     gap: var(--space-1);
     padding: var(--space-5);
     background: var(--color-surface);
@@ -255,6 +269,12 @@ const experience = await getExperience();
   .panel__value {
     font-size: var(--text-lg);
     font-weight: var(--weight-semibold);
+  }
+  .panel__detail {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-normal);
   }
   .tools {
     display: grid;
