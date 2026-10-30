@@ -103,6 +103,7 @@ The site builds to static files in `dist/` and is served by a Cloudflare Worker 
 - Production branch: `main`. Every push to `main` rebuilds and redeploys.
 - Build command: `npm run build`
 - Deploy command: `npx wrangler deploy` (Cloudflare's default)
+- Non-production branches build with `npx wrangler preview`, which requires the `previews` block in `wrangler.jsonc`. Without it those builds fail, and because Cloudflare builds each commit once, a branch push that lands before the `main` push can leave production undeployed. Push `main` first.
 - Node version: 22 (from `.node-version`)
 - [`wrangler.jsonc`](../wrangler.jsonc) tells Wrangler to upload `dist/` as static assets, serve `404.html` for unknown URLs, and use the Worker name from the dashboard (`portfilio-brucehgale-com1`). Without this file, Wrangler tries to add the Astro Cloudflare server adapter, which this static site does not need.
 - `public/_headers` sets long-term caching for fingerprinted assets and basic security headers.

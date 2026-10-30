@@ -8,5 +8,8 @@
     "directory": "./dist",
     // Serve dist/404.html with a real 404 status for unknown URLs.
     "not_found_handling": "404-page"
-  }
+  },
+  // Lets Cloudflare build preview links for non-main branches
+  // ("npx wrangler preview"); production deploys ignore it.
+  "previews": {}
 }
